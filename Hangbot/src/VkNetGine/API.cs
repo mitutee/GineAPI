@@ -20,46 +20,82 @@ namespace VkNetGine
         }
     }
 
-
+    /// <summary>
+    /// Tools for interaction between bot / console / GUI and VS server
+    /// </summary>
     public class API
     {
-        private HttpClient client;
-        private ClockTower _tower;
+        private HttpClient client; // For sending requests and getting responses
+        private ClockTower _tower; // {Handles events ( incoming messages ) and chimes bot about each}
 
+        //********************************* CONSTRUCTORS *********************************************
+
+        /// <summary>
+        /// Creates new instance of API class and starts interaction with server ( <see cref="SetupLP"/> )
+        /// </summary>
+        /// <param name="token">Access token for your account / group </param>
+        /// <param name="tower">{Event handler}</param>
         public API(string token , ClockTower tower)
         {
             _tower = tower;
             client = new HttpClient();
             RequestBuilder.Token = token;
-            // Handle inbox there
+            // Handle unanswered inbox messages here
 
             //---   ---
-            SetupLP();
+            SetupLP(); // Start our work
         }
+       
 
+        //********************************* PUBLIC METHODS *******************************************
 
+        /// <summary>
+        /// Asynchronously sends message
+        /// </summary>
+        /// <param name="m">Message to send ( contains target )</param>
         public async void SendMessage(Message m)
         {
             string req = RequestBuilder.SendMsg(m.Target, m.Text);
             await client.GetAsync(req);
         }
 
+        //********************************************************************************************
 
+        /// <summary>
+        /// 1.Gets answer in JSON string
+        /// 2.Converts it to <see cref="VkEvent"/>
+        /// 3.Sends event to <see cref="HandleIncomingMessages(VkEvent)"/>
+        /// </summary>
+        /// <param name="answer"></param>
         private void DealWithAnswer(string answer)
         {
-            JObject o = JObject.Parse(answer);
-            RequestBuilder.Lpts = o["ts"].ToString();
+            //**
+            VkEvent e = JsonMituteeDeserializator.ConvertToEvent(answer); // TO REFACTORING
+            //**
+            HandleIncomingMessages(e); // Check event for incoming messages
+        }
 
-            VkEvent e = JsonMituteeDeserializator.ConvertToEvent(answer);
+        /// <summary>
+        /// Checks event for incoming messages and if they are there : 
+        /// Notifies bots via <see cref="_tower"/>
+        /// </summary>
+        /// <param name="e"></param>
+        private void HandleIncomingMessages(VkEvent e)
+        {
             if (e.HasIncommingMsg())
             {
-                foreach(var msg in e.IncommingMessages)
+                foreach (var msg in e.IncommingMessages)
                 {
                     _tower.ChimeIncomingMessage(msg);
                 }
             }
-            CallLP();
         }
+        
+        /// <summary>
+        /// Calls Long Poll server, waits for answer and process it;
+        /// Resets <see cref="RequestBuilder"/> "ts" property;
+        /// Recursively sends next request to start listening for next update;
+        /// </summary>
         private async void CallLP()
         {
             string req = RequestBuilder.CallLP();
@@ -69,8 +105,16 @@ namespace VkNetGine
                 string answer = sr.ReadToEnd();
                 Console.WriteLine(answer);
                 DealWithAnswer(answer);
+
+                JObject o = JObject.Parse(answer);
+                RequestBuilder.Lpts = o["ts"].ToString();
+                CallLP();
             }
         }
+        /// <summary>
+        /// Sends first request to Long Poll Server, setups RequestBuilder properties : server, key and ts
+        /// Calls <see cref="CallLP()"/> to get next notification about event
+        /// </summary>
         private async void SetupLP()
         {
             string req = RequestBuilder.InitLP();
@@ -79,13 +123,14 @@ namespace VkNetGine
             {
                 string answer = sr.ReadToEnd();
                 Console.WriteLine(answer);
-
                 JObject o = JObject.Parse(answer);
+                //--  Setup Request builder class for sending requests to Long Poll Server --
                 RequestBuilder.Lpserver = o["response"]["server"].ToString();
                 RequestBuilder.Lpkey = o["response"]["key"].ToString();
                 RequestBuilder.Lpts = o["response"]["ts"].ToString();
+                //--   --
             }
-            CallLP();
+            CallLP(); // Sendint next request ( first was just for setup )
         }
         
     }

@@ -1,5 +1,5 @@
---temp-output:C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\Hangbot\obj\Debug\netcoreapp1.0\
---out:C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\Hangbot\bin\Debug\netcoreapp1.0\Hangbot.dll
+--temp-output:C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\Hangbot\obj\Debug\netcoreapp1.0\
+--out:C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\Hangbot\bin\Debug\netcoreapp1.0\Hangbot.dll
 --define:DEBUG
 --define:TRACE
 --define:NETCOREAPP1_0
@@ -88,6 +88,7 @@
 --reference:C:\Users\mitutee\.nuget\packages\System.Threading.Timer\4.0.1\ref\netstandard1.2\System.Threading.Timer.dll
 --reference:C:\Users\mitutee\.nuget\packages\System.Xml.ReaderWriter\4.0.11\ref\netstandard1.3\System.Xml.ReaderWriter.dll
 --reference:C:\Users\mitutee\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll
---reference:C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\VkNetGine\bin\Debug\netstandard1.6\VkNetGine.dll
-C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\Hangbot\Program.cs
-C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\Hangbot\Properties\AssemblyInfo.cs
+--reference:C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\VkNetGine\bin\Debug\netstandard1.6\VkNetGine.dll
+C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\Hangbot\Hangbot.cs
+C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\Hangbot\Program.cs
+C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\Hangbot\Properties\AssemblyInfo.cs
