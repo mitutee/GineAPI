@@ -2074,17 +2074,18 @@
           "lib/netstandard1.3/_._": {}
         }
       },
-      "Hanggame/1.0.0": {
+      "Hangbot/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v1.0",
         "dependencies": {
-          "Microsoft.NETCore.App": "1.0.1"
+          "Microsoft.NETCore.App": "1.0.1",
+          "VkNetGine": "1.0.0"
         },
         "compile": {
-          "netcoreapp1.0/Hanggame.dll": {}
+          "netcoreapp1.0/Hangbot.dll": {}
         },
         "runtime": {
-          "netcoreapp1.0/Hanggame.dll": {}
+          "netcoreapp1.0/Hangbot.dll": {}
         }
       },
       "VkNetGine/1.0.0": {
@@ -6790,22 +6791,21 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Hanggame/1.0.0": {
+    "Hangbot/1.0.0": {
       "type": "project",
-      "path": "../../../../Hanggame/src/Hanggame/project.json",
-      "msbuildProject": "../../../../Hanggame/src/Hanggame/Hanggame.xproj"
+      "path": "../src/Hangbot/project.json",
+      "msbuildProject": "../src/Hangbot/Hangbot.xproj"
     },
     "VkNetGine/1.0.0": {
       "type": "project",
-      "path": "../VkNetGine/project.json",
-      "msbuildProject": "../VkNetGine/VkNetGine.xproj"
+      "path": "../src/VkNetGine/project.json",
+      "msbuildProject": "../src/VkNetGine/VkNetGine.xproj"
     }
   },
   "projectFileDependencyGroups": {
     "": [
-      "Hanggame >= 1.0.0-*",
-      "Microsoft.NETCore.App >= 1.0.1",
-      "VkNetGine >= 1.0.0-*"
+      "Hangbot >= 1.0.0-*",
+      "Microsoft.NETCore.App >= 1.0.1"
     ],
     ".NETCoreApp,Version=v1.0": []
   },

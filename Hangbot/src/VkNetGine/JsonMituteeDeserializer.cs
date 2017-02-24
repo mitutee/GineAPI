@@ -85,6 +85,7 @@ namespace VkNetGine
                 string el = string.Empty;
                 while (i < jsarr.Length && jsarr[i] != ',')
                 {
+                    if (jsarr[i] == '\\' || jsarr[i] == '"') continue;
                     el += jsarr[i];
                     i++;
                 }
