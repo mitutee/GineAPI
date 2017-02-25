@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using VkNetGine;
 using Hanggame;
+using System.Net.Http;
+using System.IO;
 
 namespace Hangbot
 {
@@ -11,7 +13,7 @@ namespace Hangbot
 
     public class Hangbot
     {
-        //---- Better architecture for message sending ---
+        //---- Cloud architecture for word loading ---
 
         // -----   -----
 
@@ -29,6 +31,9 @@ namespace Hangbot
         }
 
         public Hangbot(string token) {
+
+            
+
             _tower = new ClockTower(); // initializing notification about new messages at all
 
             api = new API(token, _tower);
@@ -56,18 +61,26 @@ namespace Hangbot
 
         private void HandleIncomingMessage(Message msg)
         {
-            Console.WriteLine("New message");
+            // reseting the game
+            if (msg.Text.ToLower() == ".начать" || FuckingDeserealizationOfQuotesAndSlashesKostyl(msg.Text.ToLower()) == ".начать")
+                goto start_new_game;
+
+            
             /// Game is already running;
             /// Keep playing;
             if (games.ContainsKey(msg.Target)) {
+
                 Console.WriteLine("We are playing. Sending data to game input");
                 games[msg.Target].Input_Buffer = msg.Text;
+                    return;
             }
-            else if(WantsStartTheGame(msg.Text)){
+            start_new_game:
+            if (WantsStartTheGame(msg.Text)){
                 /// Starting the new game
-                start_new_game:
+                
                 CommunicationChannel new_channel = new CommunicationChannel(msg.Target);
                 new_channel.OutputIsReady += OnOutputIsReady;
+                    if (games.ContainsKey(msg.Target)) games.Remove(msg.Target);
                 games.Add(msg.Target,new_channel);
             }
             else {
@@ -112,6 +125,7 @@ namespace Hangbot
             "д",
             "ок",
             "го",
+            ".начать"
 
         };
     }
