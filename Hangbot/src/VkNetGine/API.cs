@@ -82,6 +82,7 @@ namespace VkNetGine
         /// <param name="e"></param>
         private void HandleIncomingMessages(VkEvent e)
         {
+
             if (e.HasIncommingMsg())
             {
                 foreach (var msg in e.IncommingMessages)

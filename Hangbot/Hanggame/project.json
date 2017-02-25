@@ -5,12 +5,11 @@
   },
 
   "dependencies": {
-    "Hanggame": "1.0.0-*",
+    "Hangbot": "1.0.0-*",
     "Microsoft.NETCore.App": {
       "type": "platform",
       "version": "1.0.1"
-    },
-    "VkNetGine": "1.0.0-*"
+    }
   },
 
   "frameworks": {

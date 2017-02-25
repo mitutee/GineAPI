@@ -80,7 +80,7 @@ namespace VkNetGine
             $"{_mainURI}messages.getLongPollServer?use_ssl=1&need_pts=1?v=5.41&access_token={_token}&count=10&offset=0";
         //--  --
         public static string SendMsg(string id, string msg) =>
-            $"{_mainURI}messages.send?user_id={id}&message=\"{msg}\"&v=5.41&access_token={_token}&count=10&offset=0";
+            $"{_mainURI}messages.send?user_id={id}&message={msg}&v=5.41&access_token={_token}&count=10&offset=0";
         //--  --
           
         public static string CallLP() => $"https://{_lpserver}?act=a_check&key={_lpkey}&ts={_lpts}&wait=25&mode=2&version=1";
