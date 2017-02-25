@@ -12,25 +12,14 @@ namespace Hangbot
     public class Hangbot
     {
         //---- Better architecture for message sending ---
-        private Messager _messager;
 
-        public Messager messager {
-            get {
-                return _messager;
-            }
-
-            set {
-                _messager = value;
-            }
-        }
         // -----   -----
 
         private API api;
 
-        private BufferClockTower _buffer_tower;
         private ClockTower _tower; //Subsribing for events there
-        private Hanggame.Hanggame game;
-        private CommunicationChannel game_channel;
+        private Dictionary<string, CommunicationChannel> games;
+
 
 
 
@@ -40,25 +29,17 @@ namespace Hangbot
         }
 
         public Hangbot(string token) {
-            _tower = new ClockTower();
-            _buffer_tower = new BufferClockTower();
+            _tower = new ClockTower(); // initializing notification about new messages at all
+
             api = new API(token, _tower);
 
-            messager = new Messager(api);
-
-            //_buffer_tower.TimeToSendMessageToTheUser += (_buffer_message) => {
-            //    SendCustomMessage("80314023", _buffer_message);
-            //};
+            ///Subscribe for the event of the new Message
             _tower.Chime += (msg) => {
                 HandleIncomingMessage(msg);
                 Console.WriteLine("NEW MESSAGE! HANDLING...");
             };
-            game_channel = new CommunicationChannel(_tower, _buffer_tower);
 
-            game_channel.InputIsReady += OnInputIsReady;
 
-            game = new Hanggame.Hanggame(game_channel);
-            game.PlayGame();
 
 
 
@@ -66,32 +47,42 @@ namespace Hangbot
 
 
         #region TUTORIAL
-        public void OnInputIsReady(object source, EventArgs e) {
-            Console.WriteLine("Inside BOT CLASS");
-            SendCustomMessage("80314023", game_channel.Input_Buffer);
+        public void OnOutputIsReady(CommunicationChannel source, EventArgs e) {
+            Console.WriteLine("Sending some message from the game)+++");
+            api.SendMessage(new Message(source.Player, source.Output_Buffer));
         } 
         #endregion
 
         private void HandleIncomingMessage(Message msg)
         {
-            game_channel.Output_Buffer += msg.Text;
-            string answer = "John";
-            //api.SendMessage(new Message(msg.Target, answer));
+            Console.WriteLine("New message");
+            /// Game is already running;
+            /// Keep playing;
+            if (games.ContainsKey(msg.Target)) {
+                Console.WriteLine("We are playing. Sending data to game input");
+                games[msg.Target].Input_Buffer = msg.Text;
+            }
+            else if(WantsStartTheGame(msg.Text)){
+                /// Starting the new game
+
+                CommunicationChannel new_channel = new CommunicationChannel(msg.Target);
+                new_channel.OutputIsReady += OnOutputIsReady;
+                games.Add(msg.Target,new_channel);
+            }
+            else {
+                string answer = msg.Text;
+                api.SendMessage(new Message(msg.Target, answer));
+            }
+
+
         }
 
-
-        
-    }
-    public delegate void HandleBuffer(string _from_game);
-     
-    public class BufferClockTower {
-
-        public event HandleBuffer TimeToSendMessageToTheUser;
-
-        public void ChimeBufferIncome(string income) {
-            TimeToSendMessageToTheUser(income);
+        private bool WantsStartTheGame(string text) {
+            text = text.ToLower();
+            return text == "y" || text == "yes" || text == "да";
         }
     }
+
 
 
 
