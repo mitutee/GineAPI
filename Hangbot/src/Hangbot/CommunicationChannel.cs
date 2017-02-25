@@ -18,9 +18,9 @@ namespace Hangbot
         public string Read() {
 
             waiter.WaitOne();
-            string text = Input_Buffer;
-            Input_Buffer = "";
-            return text;
+
+
+            return Input_Buffer;
         }
         //*************************************************************************************************
         private EventWaitHandle waiter;
@@ -59,6 +59,7 @@ namespace Hangbot
         public CommunicationChannel(string target) : this() {
 
             this.Player = target;
+            Task.Factory.StartNew(Game.PlayGame);
         }
 
         /// <summary>
@@ -66,15 +67,16 @@ namespace Hangbot
         /// </summary>
         public string Output_Buffer {
             get {
+                // Accessed by user
                 string temp = _output_buffer;
                 _output_buffer = "";
                 return temp;
             }
 
             set {
+                // Accessed by game
                 _output_buffer = value;
                 Console.WriteLine("Game hase written something..");
-
                 OnOutputIsReady();
                 //_buffer_tower.ChimeBufferIncome(value);
             }
@@ -85,16 +87,32 @@ namespace Hangbot
         /// </summary>
         public string Input_Buffer {
             get {
-                return _input_buffer;
+                // Accessed by game
+                string temp = _input_buffer;
+                _input_buffer = "";
+                return temp;
             }
 
             set {
-                _input_buffer = value; // _output_buffer
+                // Accessed by user
+                _input_buffer = FuckingDeserealizationOfQuotesAndSlashesKostyl(value); 
                 waiter.Set();
             }
         }
 
-        
+        /// <summary>
+        /// Ommiting double quotes and backslashes
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        private string FuckingDeserealizationOfQuotesAndSlashesKostyl(string v) {
+            string na_vyhod = "";
+            for (int i = 0; i < v.Length; i++) {
+                if(v[i] != '\\' && v[i] != '"')na_vyhod += v[i]; 
+            }
+            return na_vyhod;
+        }
+
         public string Player {
             get {
                 return _player;

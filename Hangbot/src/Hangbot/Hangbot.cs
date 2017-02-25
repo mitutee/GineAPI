@@ -38,6 +38,7 @@ namespace Hangbot
                 HandleIncomingMessage(msg);
                 Console.WriteLine("NEW MESSAGE! HANDLING...");
             };
+            games = new Dictionary<string, CommunicationChannel>();
 
 
 
@@ -64,23 +65,55 @@ namespace Hangbot
             }
             else if(WantsStartTheGame(msg.Text)){
                 /// Starting the new game
-
+                start_new_game:
                 CommunicationChannel new_channel = new CommunicationChannel(msg.Target);
                 new_channel.OutputIsReady += OnOutputIsReady;
                 games.Add(msg.Target,new_channel);
             }
             else {
-                string answer = msg.Text;
+                string answer = defaultMsg();
                 api.SendMessage(new Message(msg.Target, answer));
             }
 
 
         }
 
-        private bool WantsStartTheGame(string text) {
-            text = text.ToLower();
-            return text == "y" || text == "yes" || text == "да";
+        private string defaultMsg() {
+            return defaultMsgs[new Random().Next(0, defaultMsgs.Count - 1)];
         }
+
+        private List<string> defaultMsgs = new List<string>() {
+            "Хочешь поиграть в виселицу? 😎(напиши 'да', к примеру)",
+            "Привет! Можем сыграть с тобой в 'Виселицу', если хочешь 😊",
+            "😜 Давай играть в 'Виселицу!' Хочешь?",
+
+        };
+
+        private string FuckingDeserealizationOfQuotesAndSlashesKostyl(string v) {
+            string na_vyhod = "";
+            for (int i = 0; i < v.Length; i++) {
+                if (v[i] != '\\' && v[i] != '"') na_vyhod += v[i];
+            }
+            return na_vyhod;
+        }
+        private bool WantsStartTheGame(string text) {
+            text = FuckingDeserealizationOfQuotesAndSlashesKostyl(text.ToLower());
+            return text == "y" || text == "yes" || text == "да" || text == "\"y\"" ;
+        }
+
+        private List<string> answersToInitializeTheGame = new List<string>() {
+            "y",
+            "yes",
+            "da",
+            "go",
+
+            "да",
+            "давай",
+            "д",
+            "ок",
+            "го",
+
+        };
     }
 
 
