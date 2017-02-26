@@ -10,6 +10,7 @@ using Hanggame;
 namespace Hangbot
 {
     public class CommunicationChannel : Hanggame.IChannel {
+        #region IChannel implementation
         //*****************************************************IChannel implementation**********************
 
         public void WriteLine(string s = "\n") {
@@ -18,38 +19,33 @@ namespace Hangbot
         public string Read() {
 
             waiter.WaitOne();
-
-
             return Input_Buffer;
         }
-        //*************************************************************************************************
-        private EventWaitHandle waiter;
-        private EventWaitHandle wait_for_bot_writes;
+        //************************************************************************************************* 
+        #endregion
 
-        private string _output_buffer;
-        private string _input_buffer;
-        private string _player;
-        private Hanggame.Hanggame _game;
+        #region Event propagating
 
+                //*************************************************************************************************
+                //                         Event sending
+                public delegate void OutputBufferEventHandler(CommunicationChannel source, EventArgs args);
 
-        //*************************************************************************************************
-        //                         Event sending
-        public delegate void OutputBufferEventHandler(CommunicationChannel source, EventArgs args);
-
-        public event OutputBufferEventHandler OutputIsReady;
+                public event OutputBufferEventHandler OutputIsReady;
 
 
-        /// <summary>
-        /// Notifies subscribers that Message is ready
-        /// </summary>
-        protected virtual void OnOutputIsReady() {
-            if (OutputIsReady != null) {
-                OutputIsReady(this, EventArgs.Empty);
-            }
-        }
+                /// <summary>
+                /// Notifies subscribers that Message is ready
+                /// </summary>
+                protected virtual void OnOutputIsReady() {
+                    if (OutputIsReady != null) {
+                        OutputIsReady(this, EventArgs.Empty);
+                    }
+                }
 
-        //*************************************************************************************************
+                //************************************************************************************************* 
+                #endregion
 
+        #region Constructors
         private CommunicationChannel() {
             waiter = new EventWaitHandle(false, EventResetMode.AutoReset);
             Game = new Hanggame.Hanggame(this);
@@ -60,7 +56,22 @@ namespace Hangbot
 
             this.Player = target;
             Task.Factory.StartNew(Game.PlayGame);
-        }
+        } 
+        #endregion
+        
+
+
+        private EventWaitHandle waiter;
+        private EventWaitHandle wait_for_bot_writes;
+
+        private string _output_buffer;
+        private string _input_buffer;
+        private string _player;
+        private Hanggame.Hanggame _game;
+
+
+
+       
 
         /// <summary>
         /// To read from
@@ -88,9 +99,8 @@ namespace Hangbot
         public string Input_Buffer {
             get {
                 // Accessed by game
-                string temp = _input_buffer;
-                _input_buffer = "";
-                return temp;
+
+                return _input_buffer;
             }
 
             set {

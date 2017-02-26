@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v1.0": {
       "Hangbot/1.0.0": {
         "dependencies": {
+          "Hanggame": "1.0.0",
           "VkNetGine": "1.0.0"
         },
         "runtime": {
@@ -25,6 +26,11 @@
       "System.Runtime.Serialization.Primitives/4.1.1": {
         "runtime": {
           "lib/netstandard1.3/System.Runtime.Serialization.Primitives.dll": {}
+        }
+      },
+      "Hanggame/1.0.0": {
+        "runtime": {
+          "Hanggame.dll": {}
         }
       },
       "VkNetGine/1.0.0": {
@@ -52,6 +58,11 @@
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-HZ6Du5QrTG8MNJbf4e4qMO3JRAkIboGT5Fk804uZtg3Gq516S7hAqTm2UZKUHa7/6HUGdVy3AqMQKbns06G/cg=="
+    },
+    "Hanggame/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "VkNetGine/1.0.0": {
       "type": "project",

@@ -104,7 +104,7 @@ namespace VkNetGine
             using (StreamReader sr = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 string answer = sr.ReadToEnd();
-                Console.WriteLine(answer);
+              //  Console.WriteLine(answer);
                 DealWithAnswer(answer);
 
                 JObject o = JObject.Parse(answer);
@@ -118,21 +118,33 @@ namespace VkNetGine
         /// </summary>
         private async void SetupLP()
         {
-            string req = RequestBuilder.InitLP();
-            HttpResponseMessage response = await client.GetAsync(req);
-            using (StreamReader sr = new StreamReader(await response.Content.ReadAsStreamAsync()))
-            {
-                string answer = sr.ReadToEnd();
-                Console.WriteLine(answer);
-                JObject o = JObject.Parse(answer);
-                //--  Setup Request builder class for sending requests to Long Poll Server --
-                RequestBuilder.Lpserver = o["response"]["server"].ToString();
-                RequestBuilder.Lpkey = o["response"]["key"].ToString();
-                RequestBuilder.Lpts = o["response"]["ts"].ToString();
-                //--   --
+             establis_LP:
+            try {
+
+               
+                string req = RequestBuilder.InitLP();
+                HttpResponseMessage response = await client.GetAsync(req);
+                using (StreamReader sr = new StreamReader(await response.Content.ReadAsStreamAsync())) {
+                    string answer = sr.ReadToEnd();
+                    Console.WriteLine("Connection with Long Poll Server establised at {0}", DateTime.Now);
+                    JObject o = JObject.Parse(answer);
+                    //--  Setup Request builder class for sending requests to Long Poll Server --
+                    RequestBuilder.Lpserver = o["response"]["server"].ToString();
+                    RequestBuilder.Lpkey = o["response"]["key"].ToString();
+                    RequestBuilder.Lpts = o["response"]["ts"].ToString();
+                    //--   --
+                }
+            }
+            catch (Exception e) {
+
+                SendMessage(new Message(_my_id, e.Message + $" at {DateTime.Now}"));
+                goto establis_LP;
             }
             CallLP(); // Sendint next request ( first was just for setup )
         }
-        
+
+        private static string _my_id = "80314023";
+
+
     }
 }
