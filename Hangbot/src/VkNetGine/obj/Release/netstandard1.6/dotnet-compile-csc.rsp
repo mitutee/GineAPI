@@ -9,8 +9,8 @@
 -debug:full
 -nostdlib
 -nologo
-"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\VkNetGine\obj\Release\netstandard1.6\dotnet-compile.assemblyinfo.cs"
--out:"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\VkNetGine\bin\Release\netstandard1.6\VkNetGine.dll"
+"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\VkNetGine\obj\Release\netstandard1.6\dotnet-compile.assemblyinfo.cs"
+-out:"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\VkNetGine\bin\Release\netstandard1.6\VkNetGine.dll"
 -r:"C:\Users\mitutee\.nuget\packages\Microsoft.CSharp\4.0.1\ref\netstandard1.0\Microsoft.CSharp.dll"
 -r:"C:\Users\mitutee\.nuget\packages\Microsoft.Win32.Primitives\4.0.1\ref\netstandard1.3\Microsoft.Win32.Primitives.dll"
 -r:"C:\Users\mitutee\.nuget\packages\Newtonsoft.Json\9.0.1\lib\netstandard1.0\Newtonsoft.Json.dll"
@@ -58,9 +58,9 @@
 -r:"C:\Users\mitutee\.nuget\packages\System.Threading.Timer\4.0.1\ref\netstandard1.2\System.Threading.Timer.dll"
 -r:"C:\Users\mitutee\.nuget\packages\System.Xml.ReaderWriter\4.0.11\ref\netstandard1.3\System.Xml.ReaderWriter.dll"
 -r:"C:\Users\mitutee\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll"
-"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\VkNetGine\API.cs"
-"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\VkNetGine\JsonMituteeDeserializer.cs"
-"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\VkNetGine\Message.cs"
-"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\VkNetGine\RBuilder.cs"
-"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\VkNetGine\VkEvent.cs"
-"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\just-for-test\Hangbot\src\VkNetGine\Properties\AssemblyInfo.cs"
+"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\VkNetGine\API.cs"
+"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\VkNetGine\JsonMituteeDeserializer.cs"
+"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\VkNetGine\Message.cs"
+"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\VkNetGine\RBuilder.cs"
+"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\VkNetGine\VkEvent.cs"
+"C:\Users\mitutee\Documents\Visual Studio 2015\Projects\GineAPI\Hangbot\src\VkNetGine\Properties\AssemblyInfo.cs"

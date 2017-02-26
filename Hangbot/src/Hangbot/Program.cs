@@ -23,23 +23,16 @@ namespace Hangbot
             // John.SendCustomMessage("80314023", $"Awake on {DateTime.Now}");
             //Task.Factory.StartNew(Asynchronously);
             while (true) {
-                string txt = Console.ReadLine();
-                John.SendCustomMessage(to, txt);
+                John.SendCustomMessage(_assistant_id, $"Awake on {DateTime.Now}");
+                Thread.Sleep(30000);
             }
-            Process.GetCurrentProcess().WaitForExit();
-
 
 
 
         }
 
-        public static void Asynchronously() {
-                while (true)
-            {
-                Console.WriteLine(DateTime.Now);
-                Thread.Sleep(1500);
-            }
-        }
+        public static string _assistant_id = "414460724";
+
 
 
     }
