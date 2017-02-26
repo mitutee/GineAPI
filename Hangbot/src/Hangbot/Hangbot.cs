@@ -82,7 +82,14 @@ namespace Hangbot
                 new_channel.OutputIsReady += OnOutputIsReady;
                     if (games.ContainsKey(msg.Target)) games.Remove(msg.Target);
                 games.Add(msg.Target,new_channel);
-            }
+            } else if (DontWantsStartTheGame(msg.Text)) {
+                
+                    /// Starting the new game
+                    CommunicationChannel new_channel = new CommunicationChannel(msg.Target);
+                    new_channel.OutputIsReady += OnOutputIsReady;
+                    if (games.ContainsKey(msg.Target)) games.Remove(msg.Target);
+                    games.Add(msg.Target, new_channel);
+                }
             else {
                 string answer = defaultMsg();
                 api.SendMessage(new Message(msg.Target, answer));
@@ -99,6 +106,12 @@ namespace Hangbot
             "Хочешь поиграть в виселицу? 😎(напиши 'да', к примеру)",
             "Привет! Можем сыграть с тобой в 'Виселицу', если хочешь 😊",
             "😜 Давай играть в 'Виселицу!' Хочешь?",
+            "Я знаю одну отличную игру, давай сыграем?",
+            "Спорим, что ты не победишь в моей игре?",
+            "Тебе скучно и одиноко? Давай сыграем в виселицу?",
+            "Мне скучно, может сыграем в висельника?",
+            "Знаешь висельника? Спорим, что проиграешь мне?)",
+            "Хочешь ли ты в игру?"
 
         };
 
@@ -111,7 +124,13 @@ namespace Hangbot
         }
         private bool WantsStartTheGame(string text) {
             text = FuckingDeserealizationOfQuotesAndSlashesKostyl(text.ToLower());
-            return text == "y" || text == "yes" || text == "да" || text == "\"y\"" ;
+            return text == "y" || text == "yes" || text == "да" || text == "\"y\"" || text == "давай" || text == "го" || text == "оккей" || text == "хорошо" ;
+        }
+
+        private bool DontWantsStartTheGame(string text)
+        {
+            text = FuckingDeserealizationOfQuotesAndSlashesKostyl(text.ToLower());
+            return text == "n" || text == "no" || text == "нет" || text == "\"н\"" || text == "иди на хуй" || text == "иди нахуй" || text == "иди в жопу" || text == "не хочу" ;
         }
 
         private List<string> answersToInitializeTheGame = new List<string>() {
@@ -120,13 +139,26 @@ namespace Hangbot
             "da",
             "go",
 
+            "оккей",
+            "может быть",
+            "дат",
             "да",
             "давай",
             "д",
             "ок",
             "го",
-            ".начать"
-
+            ".начать",
+            
+            "ебаш",
+            "ну можно",
+            "давай сыграем",
+            "хорошо",
+            "я не против",
+            "валяй",
+            "действуй",
+            "было бы неплохо",
+            "конечно",
+            "хочу",
         };
     }
 
