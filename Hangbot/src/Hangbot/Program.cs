@@ -24,6 +24,7 @@ namespace Hangbot
             //Task.Factory.StartNew(Asynchronously);
             while (true) {
                 John.SendCustomMessage(_assistant_id, $"Awake on {DateTime.Now}");
+                John.ReCheck();
                 Thread.Sleep(30000);
             }
 

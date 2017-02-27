@@ -12,6 +12,9 @@ namespace Hangbot
     public class CommunicationChannel : Hanggame.IChannel {
         //*****************************************************IChannel implementation**********************
 
+        public bool IsDead { get; set; }
+
+
         public void WriteLine(string s = "\n") {
             Output_Buffer = (s + "\n");
         }
@@ -53,6 +56,7 @@ namespace Hangbot
         private CommunicationChannel() {
             waiter = new EventWaitHandle(false, EventResetMode.AutoReset);
             Game = new Hanggame.Hanggame(this);
+            IsDead = false;
 
         }
 

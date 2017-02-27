@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Threading;
 using Newtonsoft.Json.Linq;
 using System.IO;
 
@@ -41,7 +42,7 @@ namespace VkNetGine
             client = new HttpClient();
             RequestBuilder.Token = token;
             // Handle unanswered inbox messages here
-
+            HandleUnreadDialogs();
             //---   ---
             SetupLP(); // Start our work
         }
@@ -142,6 +143,37 @@ namespace VkNetGine
             }
             CallLP(); // Sendint next request ( first was just for setup )
         }
+
+
+
+        public async void HandleUnreadDialogs() {
+
+                string rq = RequestBuilder.GetUnreadDialogs();
+                HttpResponseMessage answer = await client.GetAsync(rq);
+                string answer_message = await answer.Content.ReadAsStringAsync();
+                DM(answer_message);
+                
+            
+
+        }
+
+        private void DM(string json_string) // Deserialize message
+        {
+            JObject server_answer = JObject.Parse(json_string);
+            foreach (var item in server_answer["response"]["items"]) {
+                string from_user = item["message"]["user_id"].ToString();
+                string text = item["message"]["body"].ToString();
+
+                Message unanswered = new Message(from_user, text);
+                _tower.ChimeIncomingMessage(unanswered);
+            }
+
+
+        }
+
+
+
+
 
         private static string _my_id = "80314023";
 
