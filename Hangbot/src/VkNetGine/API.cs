@@ -42,7 +42,7 @@ namespace VkNetGine
             client = new HttpClient();
             RequestBuilder.Token = token;
             // Handle unanswered inbox messages here
-            HandleUnreadDialogs();
+     //       HandleUnreadDialogs();
             //---   ---
             SetupLP(); // Start our work
         }
