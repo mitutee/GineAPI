@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Net.Http;
-
+using vk_dotnet.Methods;
 
 namespace vk_dotnet
 {
     class Session
     {
-        private HttpClient client = new HttpClient();
+        
 
         public Session(){}
 
 
-        public Users users = Users.TheInstance;
+        public Users_Methods Users = new Users_Methods();
     }
 }

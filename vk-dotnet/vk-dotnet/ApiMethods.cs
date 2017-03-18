@@ -11,11 +11,14 @@ namespace vk_dotnet
 
 
         public static string GetMethodUri(string method, params string[] parameters){
-            string prms = parameters[0];
-            for (int i = 1; i < parameters.Length; i++)
-                prms += '&'+ parameters[i];
 
-            string request_uri = $"{_mainURI}/{method}?{prms}";
+            string prms = "";
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                prms +=   parameters[i] + '&';
+            }
+
+            string request_uri = $"{_mainURI}/{method}?{prms}v=5.62";
             return request_uri;
 
 
