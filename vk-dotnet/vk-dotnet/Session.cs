@@ -11,8 +11,15 @@ namespace vk_dotnet
         
 
         public Session(){}
+        public Session(string token)
+        {
+            Users = new Users_Methods(token);
+            Messages = new Messages_Methods(token);
 
+        }
 
-        public Users_Methods Users = new Users_Methods();
+        public Users_Methods Users;
+
+        public Messages_Methods Messages;
     }
 }

@@ -10,13 +10,13 @@ namespace vk_dotnet.Methods
 {
     public class Users_Methods : Method
     {
-        private string _tocken;
+        private string _token;
 
         public Users_Methods() { }
 
-        public Users_Methods(string tocken)
+        public Users_Methods(string token)
         {
-            _tocken = tocken;
+            _token = token;
         }
 
         public async Task<List<User>> Get(params string[] user_ids)

@@ -11,14 +11,18 @@ namespace vk_dotnet
 {
     class Program
     {
+        public static string t = "b22bbc07a3602aa6dae05ab3fefa7ad0b72a9349ad4cd6bcc0e268772ec83d2e0fdac1a9f6325f83c7100";
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
-            Session s = new Session();
+            Session s = new Session(t);
 
-            Console.WriteLine(ApiMethods.GetMethodUri("users.get"));
-
-            AsyncMothefucker(s);
+            while (true)
+            {
+                string m = Console.ReadLine();
+                s.Messages.Send("80314023", m);
+            }
+            
 
             Console.ReadKey();
         }
