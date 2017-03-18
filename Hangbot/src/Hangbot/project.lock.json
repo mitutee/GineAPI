@@ -2076,15 +2076,15 @@
       },
       "Hanggame/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v1.0",
+        "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
-          "Microsoft.NETCore.App": "1.0.1"
+          "NETStandard.Library": "1.6.0"
         },
         "compile": {
-          "netcoreapp1.0/Hanggame.dll": {}
+          "netstandard1.6/Hanggame.dll": {}
         },
         "runtime": {
-          "netcoreapp1.0/Hanggame.dll": {}
+          "netstandard1.6/Hanggame.dll": {}
         }
       },
       "VkNetGine/1.0.0": {
@@ -6792,8 +6792,8 @@
     },
     "Hanggame/1.0.0": {
       "type": "project",
-      "path": "../../../../Hanggame/src/Hanggame/project.json",
-      "msbuildProject": "../../../../Hanggame/src/Hanggame/Hanggame.xproj"
+      "path": "../Hanggame/project.json",
+      "msbuildProject": "../Hanggame/Hanggame.xproj"
     },
     "VkNetGine/1.0.0": {
       "type": "project",
