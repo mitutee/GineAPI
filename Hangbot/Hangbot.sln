@@ -1,24 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BF6BD242-3312-49CA-8ECD-0893A68C4919}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CCB605BD-9FE2-446F-900B-6DA3C4E5A16D}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Hangbot", "src\Hangbot\Hangbot.xproj", "{821CF790-D1CB-4CB8-B47C-6A8E12931BF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hangbot", "src\Hangbot\Hangbot.csproj", "{821CF790-D1CB-4CB8-B47C-6A8E12931BF1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "VkNetGine", "src\VkNetGine\VkNetGine.xproj", "{1FA7F79A-C49A-4307-8CC2-48E422464202}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VkNetGine", "src\VkNetGine\VkNetGine.csproj", "{1FA7F79A-C49A-4307-8CC2-48E422464202}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Hanggame", "..\..\Hanggame\src\Hanggame\Hanggame.xproj", "{44087376-1C03-49DF-8255-C63AD7A32576}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hanggame", "..\..\Hanggame\src\Hanggame\Hanggame.xproj", "{44087376-1C03-49DF-8255-C63AD7A32576}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "bw", "src\bw\bw.xproj", "{BD319C08-7491-45D4-8E2B-EEC4EF5650BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bw", "src\bw\bw.csproj", "{BD319C08-7491-45D4-8E2B-EEC4EF5650BC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Hanggame", "src\Hanggame\Hanggame.xproj", "{80EAD923-3EE6-401F-A9BA-66684DC14FFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hanggame", "src\Hanggame\Hanggame.csproj", "{80EAD923-3EE6-401F-A9BA-66684DC14FFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
