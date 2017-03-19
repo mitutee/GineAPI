@@ -7,6 +7,7 @@ using System.Text;
 using vk_dotnet.Objects;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Net;
 
 namespace vk_dotnet
 {
@@ -26,20 +27,20 @@ namespace vk_dotnet
         {
             string REGEX_LOGIN_HASH = @"lg_h=(\d+\w+)";
 
-            using (var cl = new HttpClient())
+            Dictionary<string, string> data_for_login = new Dictionary<string, string>();
+
+            var cookieContainer = new CookieContainer();
+            using (var handler = new HttpClientHandler() { CookieContainer = cookieContainer })
+            using (var client = new HttpClient(handler) )
             {
-                //cl.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-                //cl.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate");
-                //cl.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
-                //cl.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
-                
-                Console.WriteLine("Headers have been set.");
-                HttpResponseMessage response = await cl.GetAsync("http://vk.com/");
+                ///usually i make a standard request without authentication, eg: to the home page.
+                ///by doing this request you store some initial cookie values,
+                ///that might be used in the subsequent login request and checked by the server
+                HttpResponseMessage response = await client.GetAsync("http://vk.com/");                
                 string response_text = await response.Content.ReadAsStringAsync();
-
-                Console.WriteLine(response_text);
-
+                //Extracted login hash for sending post requset
                 string lg_h = extractWithGivenPattern(REGEX_LOGIN_HASH, response_text);
+                //Form infrormation
                 var content = new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("act", "login"),
@@ -50,6 +51,22 @@ namespace vk_dotnet
                     new KeyValuePair<string, string>("pass", password),
                     new KeyValuePair<string, string>("lg_h", lg_h),
                 });
+
+                var r = await client.PostAsync("https://login.vk.com/", content);
+
+                var cookies_col = cookieContainer.GetCookies(new Uri("https://login.vk.com/"));
+                data_for_login.Add("p", cookies_col["p"].Value);
+                data_for_login.Add("l", cookies_col["l"].Value);
+                data_for_login.Add("remixsid", cookies_col["remixsid"].Value);
+
+                var resp = await client.GetAsync("https://vk.com/friends");
+                
+                Console.WriteLine(await resp.Content.ReadAsStringAsync());
+                foreach (var d in data_for_login)
+                {
+                    Console.WriteLine($"{d.Key} -- {d.Value}");
+                }
+
                 return "";
             }
         }
