@@ -44,7 +44,7 @@ namespace vk_dotnet.Methods
         }
 
 
-        private string _token;
+        protected string _token;
 
         public Method(string token)
         {

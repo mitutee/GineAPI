@@ -34,6 +34,7 @@ namespace vk_dotnet
             }
             Users = new Users_Methods(_token);
             Messages = new Messages_Methods(_token);
+            LongPollServer = new LongPoll_Methods(_token);
         }
         private void init(string token)
         {
@@ -44,5 +45,7 @@ namespace vk_dotnet
         public Users_Methods Users;
 
         public Messages_Methods Messages;
+
+        public LongPoll_Methods LongPollServer;
     }
 }

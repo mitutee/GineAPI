@@ -25,21 +25,26 @@ namespace vk_dotnet
             Console.OutputEncoding = Encoding.UTF8;
 
 
+            LocalConfig.TheInstance.TryGetLoginPass(out string l, out string p);
 
+            Console.WriteLine(l);
 
-            Session s = new Session("", "");
-
-            s.SignIn();
-
-
-
-
-            //Auth("+380505102671", "oJolgolo243VK");
-
+            // Async();
             Console.ReadKey();
         }
-        //\"lg_h\" value=\"([a - z0 - 9] +)\"
 
+        public static async void Async()
+        {
+            Session s = new Session(t);
+            await s.SignIn();
+            await s.LongPollServer.GetLongPollServer();
+            while (true)
+            {
+                await s.LongPollServer.CallLongPoll();
+                Thread.Sleep(5000);
+            }
+
+        }
 
 
     }

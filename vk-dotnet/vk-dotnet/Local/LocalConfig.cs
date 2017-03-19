@@ -8,7 +8,7 @@ namespace vk_dotnet.Local
     public class LocalConfig
     {
         private readonly string tokens_file = "loc_toc.json";
-
+        private readonly string login_file = "login_config.json";
 
 
         private static LocalConfig _theInstance;
@@ -23,6 +23,43 @@ namespace vk_dotnet.Local
         private LocalConfig() { }
         private Dictionary<string, string> tokens;
 
+        public bool TryGetLoginPass(out string login, out string pass)
+        {
+            string json = "";
+            login = pass = "None";
+            try
+            {
+                json = System.IO.File.ReadAllText(login_file);
+            }
+            catch(System.IO.FileNotFoundException err)
+            {
+                Console.WriteLine("Could not find {0} file with settings. Creting blank config file..", login_file);
+                createEmptyLoginConfig();
+                return false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.ReadKey();
+                return false;
+            }           
+            Dictionary<string, string> login_dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);            
+            return login_dict.TryGetValue("pass", out pass) && login_dict.TryGetValue("login", out login);
+
+        }
+
+        private void createEmptyLoginConfig()
+        {
+            Dictionary<string, string> login_conf = new Dictionary<string, string>()
+            {
+                { "login", "my_login/my_number"},
+                { "pass", "my_password"},
+                { "token", "my_token(optional)(dont use now)"},
+
+            };
+            string json = JsonConvert.SerializeObject(login_conf);
+            System.IO.File.WriteAllText(login_file, json);
+        }
 
         internal bool TryGetToken(string login, out string token)
         {
