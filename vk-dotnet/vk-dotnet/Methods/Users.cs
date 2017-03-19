@@ -12,11 +12,11 @@ namespace vk_dotnet.Methods
     {
         private string _token;
 
-        public Users_Methods() { }
+        
 
-        public Users_Methods(string token)
+        public Users_Methods(string token) : base(token)
         {
-            _token = token;
+            
         }
 
         public async Task<List<User>> Get(params string[] user_ids)
@@ -24,7 +24,7 @@ namespace vk_dotnet.Methods
             string request = ApiMethods.GetMethodUri("users.get",
                 $"user_ids={String.Join(",", user_ids)}");
 
-            string response = await SendRequestAsync(request);
+            string response = await SendGetAsync(request);
 
             Console.WriteLine(response);
 

@@ -8,19 +8,16 @@ namespace vk_dotnet.Methods
     {
         private string _token;
 
-        public Messages_Methods(){}
+        
 
-        public Messages_Methods(string token)
-        {
-            _token = token;
-        }
+        public Messages_Methods(string token) : base(token)
+        {  }
         public async void Send(string user_id, string message)
         {
             string request = ApiMethods.GetMethodUri("messages.send",
                 $"user_id={user_id}",
-                $"message={message}",
-                $"access_token={_token}");
-            string response = await SendRequestAsync(request);
+                $"message={message}");
+            string response = await SendGetAsync(request);
 
             Console.WriteLine(response);
         }
