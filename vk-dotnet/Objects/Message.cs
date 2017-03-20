@@ -4,7 +4,7 @@ using System.Text;
 
 namespace vk_dotnet.Objects
 {
-    class Message
+    public class Message
     {
         public int Id { get; set; }
         public int User_id { get; set; }

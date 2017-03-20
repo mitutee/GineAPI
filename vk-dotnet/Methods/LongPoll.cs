@@ -54,11 +54,38 @@ namespace vk_dotnet.Methods
             JObject o = JObject.Parse(response);
             _lpts = o["ts"].ToString();
 
-            List<List<string>> updates = JsonConvert.DeserializeObject<List<List<string>>>(o["updates"].ToString()); 
+            List<List<string>> updates = JsonConvert.DeserializeObject<List<List<string>>>(o["updates"].ToString());
 
-            updates.ForEach((e) => e.ForEach((el) => Console.WriteLine(el)));
+            //pdates.ForEach((e) => e.ForEach((el) => Console.WriteLine(el)));
+
 
             return updates;
         }
+
+        public static List<Message> ParseEventForMessages(List<List<string>> updates)
+        {
+            List<Message> messages = new List<Message>();
+            foreach (var ev in updates)
+            {
+                if (hasIncomeMessage(ev))
+                {
+                    Message m = parseMessage(ev);
+                    messages.Add(m);
+                }
+            }
+            return messages;
+        }
+
+        private static Message parseMessage(List<string> ev)
+        {
+            Message message = new Message();
+            message.Id = Int32.Parse(ev[1]);
+            message.User_id = Int32.Parse(ev[3]);
+            message.Body = ev[6];
+            return message;
+        }
+
+        private static bool hasIncomeMessage(List<string> ev) => (Int32.Parse(ev[0]) == 4) && ((Int32.Parse(ev[2]) & 2) == 0);
+        
     }
 }
