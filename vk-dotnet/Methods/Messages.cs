@@ -20,7 +20,6 @@ namespace vk_dotnet.Methods
                 $"message={message}",
                 $"access_token={_token}");
             string response = await SendGetAsync(request);
-
             Console.WriteLine(response);
         }
 

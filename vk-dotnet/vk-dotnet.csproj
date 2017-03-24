@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <Version>1.0.3</Version>
+    <Authors>mitutee</Authors>
   </PropertyGroup>
 
   <ItemGroup>

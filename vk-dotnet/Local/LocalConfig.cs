@@ -61,7 +61,7 @@ namespace vk_dotnet.Local
             System.IO.File.WriteAllText(login_file, json);
         }
 
-        internal bool TryGetToken(string login, out string token)
+        public bool TryGetToken(string login, out string token)
         {
             loadTokens();
             if (tokens.TryGetValue(login, out token))
@@ -69,7 +69,7 @@ namespace vk_dotnet.Local
             return false;
         }
 
-        internal void CasheToken(string login, string token)
+        public void CasheToken(string login, string token)
         {
             loadTokens();
             tokens.Remove(login);

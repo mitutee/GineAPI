@@ -9,12 +9,40 @@ namespace vk_dotnet
 {
     public class Session
     {
+
+        #region Static Members
+
+        #endregion
+
+        #region Private Fields
         private string _token { get; set; }
         private string _login { get; set; }
-        private string _pass  { get; set; }
+        private string _pass { get; set; }
+        #endregion
 
+        #region API METHODS
+        public Users_Methods Users;
 
-//        public Session(){}
+        public Messages_Methods Messages;
+
+        public LongPoll_Methods LongPollServer;
+
+        public Account_Methods Account;
+
+        /// <summary>
+        /// Initializing Methods with the given token
+        /// </summary>
+        /// <param name="token">Token to be passed into methods</param>
+        private void init(string token)
+        {
+            Users = new Users_Methods(token);
+            Messages = new Messages_Methods(token);
+            LongPollServer = new LongPoll_Methods(token);
+            Account = new Account_Methods(token);
+        }
+        #endregion
+
+        #region Constructors
         public Session(string token)
         {
             _token = token;
@@ -26,25 +54,16 @@ namespace vk_dotnet
             _pass = password;
         }
 
+        #endregion
+
+        #region Public Methods
         public async Task SignInAsync()
         {
-            if(_token == null)
-            {
+            if (_token == null) {
                 _token = await Method.LoginPasswordAutorization(_login, _pass);
             }
             init(_token);
         }
-        private void init(string token)
-        {
-            Users = new Users_Methods(token);
-            Messages = new Messages_Methods(token);
-            LongPollServer = new LongPoll_Methods(token);
-        }
-
-        public Users_Methods Users;
-
-        public Messages_Methods Messages;
-
-        public LongPoll_Methods LongPollServer;
+        #endregion
     }
 }

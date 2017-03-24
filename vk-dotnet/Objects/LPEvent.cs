@@ -1,6 +1,6 @@
 ﻿namespace vk_dotnet.Objects
 {
-    internal class LPEvent
+    public class LPEvent
     {
     }
 }
