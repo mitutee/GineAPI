@@ -263,3 +263,4 @@ __pycache__/
 loc_toc.json
 login_config.json
 Hangbot/
+.vscode/
