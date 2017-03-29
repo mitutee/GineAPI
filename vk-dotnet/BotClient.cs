@@ -34,7 +34,7 @@ namespace vk_dotnet
         {
             _s = new Session(login, password);
             _s.SignInAsync().Wait();
-           // _getMyId();
+            // _getMyId();
         }
         public BotClient(string token)
         {
@@ -50,7 +50,7 @@ namespace vk_dotnet
         {
             _s.LongPollServer.GetLongPollServer().Wait();
             Task.Factory.StartNew(_startListeningAsync);
-            
+
         }
 
         public async Task SendTextMessageAsync(string user_id, string text)
@@ -60,9 +60,16 @@ namespace vk_dotnet
 
 
         #endregion
-        
+
         #region Events
         public EventHandler<Message> IncomingMessage;
+
+        private void OnIncomingMessage(Message arg)
+        {
+            if (IncomingMessage != null)
+                IncomingMessage(this, arg);
+        }
+
         #endregion
 
         #region Private Methods
@@ -72,11 +79,10 @@ namespace vk_dotnet
                 List<List<string>> updates = await _s.LongPollServer.CallLongPoll();
                 List<Message> incoming_messages = LongPoll_Methods.ParseEventForMessages(updates);
                 foreach (var msg in incoming_messages) {
-                    if (IncomingMessage != null) {
-                        if (msg.User_id == 0) continue;
-                        Message args = msg;
-                        IncomingMessage(this, args);
-                    }
+                    if (msg.User_id == 0) continue;
+                    Message args = msg;
+                    OnIncomingMessage(args);
+
                 }
             }
         }
