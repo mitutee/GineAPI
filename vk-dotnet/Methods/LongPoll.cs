@@ -51,6 +51,9 @@ namespace vk_dotnet.Methods
             string request = $"https://{_lpserver}?act=a_check&key={_lpkey}&ts={_lpts}&wait=25&mode=128&version=1";
 
             string response = await SendGetAsync(request);
+            System.Console.WriteLine("For Sasha:");
+            Console.WriteLine(response);
+
             JObject o = JObject.Parse(response);
             _lpts = o["ts"].ToString();
 
