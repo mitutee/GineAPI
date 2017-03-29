@@ -7,6 +7,10 @@ using vk_dotnet.Objects;
 
 namespace vk_dotnet
 {
+    /// <summary>
+    /// Wrapper for vk API;
+    /// Used for automating tasks;
+    /// </summary>
     public class BotClient
     {
         #region Static Members
