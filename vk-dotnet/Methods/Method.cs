@@ -234,8 +234,7 @@ namespace vk_dotnet.Methods
             JObject o = JObject.Parse(raw_json);
             if (o["error"] != null) {
                 string s = o["error"].ToString();
-                var error = JsonConvert.DeserializeObject<Error>(s);
-                throw new ApiException(error.error_code, error.error_msg,error.request_params);
+                throw _parseException(s);
             }
             try {
 
@@ -254,6 +253,12 @@ namespace vk_dotnet.Methods
             }
         }
 
+        private static ApiException _parseException(string json)
+        {
+
+            var error = JsonConvert.DeserializeObject<Error>(json);
+            return new ApiException(error.error_code, error.error_msg, error.request_params);
+        }
         #endregion
 
 
