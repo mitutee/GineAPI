@@ -37,13 +37,13 @@ namespace vk_dotnet
         public BotClient(string login, string password)
         {
             _s = new Session(login, password);
-            _s.SignInAsync().Wait();
+            _s.SignInAsync();//.Wait();
             // _getMyId();
         }
         public BotClient(string token)
         {
             _s = new Session(token);
-            _s.SignInAsync().Wait();
+            _s.SignInAsync();// Wait();
             _getMyId();
         }
 
@@ -66,7 +66,9 @@ namespace vk_dotnet
         #endregion
 
         #region Events
-        public EventHandler<Message> IncomingMessage;
+        public delegate void BotEventHandler<TArgs>(BotClient sender, TArgs e);
+
+        public BotEventHandler<Message> IncomingMessage;
 
         private void OnIncomingMessage(Message arg)
         {
@@ -96,8 +98,6 @@ namespace vk_dotnet
             string id = "";
             List<User> answer = await _s.Users.Get();
             User me = answer[0];
-
-
             return id;
         }
         #endregion

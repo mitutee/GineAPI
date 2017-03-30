@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -22,6 +24,7 @@ namespace vk_dotnet.Methods
         public static async Task<string> SendGetAsync(string request_uri)
         {
             using (var cl = new HttpClient()) {
+                
                 var res = await cl.GetAsync(request_uri);
                 return await res.Content.ReadAsStringAsync();
             }
@@ -45,6 +48,8 @@ namespace vk_dotnet.Methods
                 return await res.Content.ReadAsStringAsync();
             }
         }
+
+
 
         #region Autorization with login and pass
         public static async Task<string> LoginPasswordAutorization(string login, string password)
@@ -197,7 +202,7 @@ namespace vk_dotnet.Methods
         #endregion
 
         #region Public Methods
-        public string GetMethodUri(string method, params string[] parameters)
+        public static string GetMethodUri(string method, params string[] parameters)
         {
 
             string prms = "";
@@ -205,18 +210,49 @@ namespace vk_dotnet.Methods
                 prms += parameters[i] + '&';
             }
 
-            string request_uri = $"{_mainURI}/{method}?{prms}access_token={_token}&v=5.62";
+            string request_uri = $"{_mainURI}/{method}?{prms}&v=5.62";
             return request_uri;
 
 
         }
         #endregion
 
-        #region Events
-
-        #endregion
 
         #region Private Methods 
+
+
+
+        private bool _isAnError(string response)
+        {
+
+            return false;
+        }
+
+        public static async Task<string> CallApiAsync(string req)
+        {
+            string raw_json = await SendGetAsync(req);
+            JObject o = JObject.Parse(raw_json);
+            if (o["error"] != null) {
+                string s = o["error"].ToString();
+                var error = JsonConvert.DeserializeObject<Error>(s);
+                throw new ApiException(error.error_code, error.error_msg,error.request_params);
+            }
+            try {
+
+                string res = o["response"].ToString();
+                return res;
+            }
+            catch(Newtonsoft.Json.JsonReaderException e) {
+                Console.Write("Catched");
+                throw JsonConvert.DeserializeObject<ApiException>(o["error"]
+                    .ToString());
+                 
+            }
+            catch (Exception e) {
+
+                throw;
+            }
+        }
 
         #endregion
 

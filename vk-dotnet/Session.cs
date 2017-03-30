@@ -28,6 +28,7 @@ namespace vk_dotnet
         public LongPoll_Methods LongPollServer;
 
         public Account_Methods Account;
+        private object my_id;
 
         /// <summary>
         /// Initializing Methods with the given token
@@ -57,11 +58,13 @@ namespace vk_dotnet
         #endregion
 
         #region Public Methods
-        public async Task SignInAsync()
+        public void SignInAsync()
         {
-            if (_token == null) {
-                _token = await Method.LoginPasswordAutorization(_login, _pass);
-            }
+
+            //if (_token == null) {
+            //    _token = await Method.LoginPasswordAutorization(_login, _pass);
+            //}
+          //  my_id = Method.ValidateToken(_token);
             init(_token);
         }
         #endregion

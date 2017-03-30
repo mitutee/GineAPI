@@ -46,6 +46,8 @@ namespace vk_dotnet.Methods
 
         }
 
+
+
         public async Task<List<List<string>>> CallLongPoll()
         {
             string request = $"https://{_lpserver}?act=a_check&key={_lpkey}&ts={_lpts}&wait=25&mode=128&version=1";
