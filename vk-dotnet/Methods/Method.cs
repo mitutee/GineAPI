@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using vk_dotnet.Local;
@@ -24,7 +23,7 @@ namespace vk_dotnet.Methods
         public static async Task<string> SendGetAsync(string request_uri)
         {
             using (var cl = new HttpClient()) {
-                
+
                 var res = await cl.GetAsync(request_uri);
                 return await res.Content.ReadAsStringAsync();
             }
@@ -232,20 +231,29 @@ namespace vk_dotnet.Methods
         {
             string raw_json = await SendGetAsync(req);
             JObject o = JObject.Parse(raw_json);
+
+            #region throwing exception if it is there
             if (o["error"] != null) {
                 string s = o["error"].ToString();
-                throw _parseException(s);
-            }
+                Error error = JsonConvert.DeserializeObject<Error>(s);                
+                switch (error.error_code) {
+                    case 5:
+                        throw new AutorizationException(error);
+                    default:
+                        throw new ApiException(error);
+                }
+            } 
+            #endregion
             try {
 
                 string res = o["response"].ToString();
                 return res;
             }
-            catch(Newtonsoft.Json.JsonReaderException e) {
+            catch (Newtonsoft.Json.JsonReaderException e) {
                 Console.Write("Catched");
                 throw JsonConvert.DeserializeObject<ApiException>(o["error"]
                     .ToString());
-                 
+
             }
             catch (Exception e) {
 
@@ -253,11 +261,10 @@ namespace vk_dotnet.Methods
             }
         }
 
-        private static ApiException _parseException(string json)
+        private static void _parseException(string json)
         {
 
-            var error = JsonConvert.DeserializeObject<Error>(json);
-            return new ApiException(error.error_code, error.error_msg, error.request_params);
+
         }
         #endregion
 

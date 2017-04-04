@@ -21,7 +21,7 @@ namespace vk_dotnet.Methods
         public async Task GetLongPollServer()
         {
             establish_LP:
-            string request = ApiMethods.GetMethodUri("messages.getLongPollServer",
+            string request = GetMethodUri("messages.getLongPollServer",
                 "use_ssl=1",
                 "need_pts=1",
                 "v=5.56",

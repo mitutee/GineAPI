@@ -17,7 +17,7 @@ namespace vk_dotnet.Methods
         /// <returns></returns>
         public async Task<User> GetInfo()
         {
-            string request = ApiMethods.GetMethodUri("account.getInfo",
+            string request = GetMethodUri("account.getInfo",
                 $"access_token={_token}");
             string response = await SendGetAsync(request);
 
@@ -30,7 +30,7 @@ namespace vk_dotnet.Methods
         public async Task<User> GetProfileInfo()
         {
 
-            string request = ApiMethods.GetMethodUri("account.getInfo",
+            string request = GetMethodUri("account.getInfo",
                 $"access_token={_token}");
             string response = await SendGetAsync(request);
             Console.WriteLine(response);

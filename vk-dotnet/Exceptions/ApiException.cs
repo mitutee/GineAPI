@@ -22,13 +22,17 @@ namespace vk_dotnet
         /// </summary>
 
 
-
-
-        public ApiException(int code, string message, List<RequestParam> requestedParams) : base(message)
+        public ApiException(Error err) : base(err.error_msg)
         {
-            Code = code;
-            RequestedParams = requestedParams;
+            Code = err.error_code;
+            RequestedParams = err.request_params;
         }
+
+        //public ApiException(int code, string message, List<RequestParam> requestedParams) : base(message)
+        //{
+        //    Code = code;
+        //    RequestedParams = requestedParams;
+        //}
 
         public int Code { get; private set; }
         public List<RequestParam> RequestedParams { get; private set; }
@@ -43,9 +47,9 @@ namespace vk_dotnet
     public class Error
     {
         /// <summary>
-     /// Code of the error;
-     /// For detailed info check https://vk.com/dev/errors
-     /// </summary>
+        /// Code of the error;
+        /// For detailed info check https://vk.com/dev/errors
+        /// </summary>
         public int error_code { get; set; }
         public string error_msg { get; set; }
         public List<RequestParam> request_params { get; set; }

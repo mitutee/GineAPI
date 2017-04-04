@@ -23,11 +23,11 @@ namespace vk_dotnet.Methods
         {
             string request;
             if (user_ids.Length == 0){
-                request = ApiMethods.GetMethodUri("users.get",
+                request = GetMethodUri("users.get",
                $"access_token={_token}" );
             }
             else{
-            request = ApiMethods.GetMethodUri("users.get",
+            request = GetMethodUri("users.get",
                 $"user_ids={String.Join(",", user_ids)}");
             }
 
