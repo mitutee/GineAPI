@@ -31,14 +31,14 @@ namespace vk_dotnet.Methods
                 $"user_ids={String.Join(",", user_ids)}");
             }
 
-
-            string response = await SendGetAsync(request);
+            
+            string response = await CallApiAsync(request);
 
             Console.WriteLine(response);
             List<User> list_of_users = new List<User>();
             try
             {
-                JToken json_users_array = JObject.Parse(response)["response"];
+                JToken json_users_array = JObject.Parse(response);
                 foreach(var user in json_users_array)
                 {
                     Console.WriteLine(user.ToString());

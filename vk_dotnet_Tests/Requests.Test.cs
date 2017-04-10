@@ -76,7 +76,20 @@ namespace vk_dotnet_Tests
             await Assert.ThrowsAsync<AutorizationException>(async () => await m.Send(my_id, text));
         }
 
+        [Fact]
+        public async void Call_CanMessage_Returns_True()
+        {
+            // arrange
+            string fresh_token = "326fbb2d47e44d7df0e2568770cbb0137ba0db36637028be553965d7608b83e1880913726e165219b3a7a";
 
+
+
+            // act
+            bool res = BotClient.TokenIsValid(fresh_token);
+
+            //assert
+            Assert.True(res);
+        }
 
         private async Task _sendInvalidReq()
         {

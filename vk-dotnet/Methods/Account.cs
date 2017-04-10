@@ -39,5 +39,13 @@ namespace vk_dotnet.Methods
             return me;
 
         }
+
+        public static async Task<int> GetAppPermissions(string token)
+        {
+            string request = GetMethodUri("account.getAppPermissions",
+                $"access_token={token}");
+            string response = await CallApiAsync(request);
+            return Int32.Parse(response);
+        }
     }
 }

@@ -14,6 +14,17 @@ namespace vk_dotnet
     public class BotClient
     {
         #region Static Members
+        public static bool TokenIsValid(string token)
+        {
+           int permissions = Account_Methods.GetAppPermissions(token).Result;
+           return _containsMessageFlag(permissions);
+        }
+
+        private static bool _containsMessageFlag(int permissions)
+        {
+            return (permissions & 4096) != 0;
+        }
+
         private static LocalConfig _configurator = LocalConfig.TheInstance;
 
         public static bool TryGetLogin(out string login, out string password)
@@ -34,32 +45,32 @@ namespace vk_dotnet
         #endregion
 
         #region Constructors
-        public BotClient(string login, string password)
-        {
-            _s = new Session(login, password);
-            _s.SignInAsync();//.Wait();
-            // _getMyId();
-        }
+        //public BotClient(string login, string password)
+        //{
+        //    _s = new Session(login, password);
+        //    _s.SignInAsync();//.Wait();
+        //    // _getMyId();
+        //}
         public BotClient(string token)
         {
             _s = new Session(token);
             _s.SignInAsync();// Wait();
-            _getMyId();
+            _getMyId().Wait();
         }
 
         #endregion
 
         #region Public Methods
-        public void StartListening()
+        public void StartListeningAsync()
         {
             _s.LongPollServer.GetLongPollServer().Wait();
             Task.Factory.StartNew(_startListeningAsync);
 
         }
 
-        public async Task SendTextMessageAsync(string user_id, string text)
+        public async Task<string> SendTextMessageAsync(string user_id, string text)
         {
-            await _s.Messages.Send(user_id, text);
+            return await _s.Messages.Send(user_id, text);
         }
 
 
@@ -97,7 +108,7 @@ namespace vk_dotnet
         {
             string id = "";
             List<User> answer = await _s.Users.Get();
-            User me = answer[0];
+           // User me = answer[0];
             return id;
         }
         #endregion

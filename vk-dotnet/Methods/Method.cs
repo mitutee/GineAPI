@@ -20,6 +20,8 @@ namespace vk_dotnet.Methods
         #region Static Members
         private static string _mainURI = "https://api.vk.com/method";
 
+
+
         public static async Task<string> SendGetAsync(string request_uri)
         {
             using (var cl = new HttpClient()) {
@@ -205,9 +207,11 @@ namespace vk_dotnet.Methods
         {
 
             string prms = "";
-            for (int i = 0; i < parameters.Length; i++) {
+            int i = 0;
+            for (; i < parameters.Length - 1; i++) {
                 prms += parameters[i] + '&';
             }
+            prms += parameters[i];
 
             string request_uri = $"{_mainURI}/{method}?{prms}&v=5.62";
             return request_uri;
@@ -227,6 +231,11 @@ namespace vk_dotnet.Methods
             return false;
         }
 
+        /// <summary>
+        /// Makes request to the API with the specified URI;
+        /// </summary>
+        /// <param name="req">URI to request</param>
+        /// <returns> Response in the string(json) format or throws a corresponding exception. </returns>
         public static async Task<string> CallApiAsync(string req)
         {
             string raw_json = await SendGetAsync(req);
@@ -261,11 +270,7 @@ namespace vk_dotnet.Methods
             }
         }
 
-        private static void _parseException(string json)
-        {
 
-
-        }
         #endregion
 
 
