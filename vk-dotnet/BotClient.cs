@@ -16,8 +16,15 @@ namespace vk_dotnet
         #region Static Members
         public static bool TokenIsValid(string token)
         {
-           int permissions = Account_Methods.GetAppPermissions(token).Result;
-           return _containsMessageFlag(permissions);
+            try {
+                int permissions = Account_Methods.GetAppPermissions(token).Result;
+                return _containsMessageFlag(permissions);
+
+            }
+            catch (Exception e) {
+
+                throw e;
+            }
         }
 
         private static bool _containsMessageFlag(int permissions)
@@ -34,10 +41,13 @@ namespace vk_dotnet
 
         #endregion
 
-        #region Private Fields
-        private readonly Session _s;
+        /// <summary>
+        /// Message from users in this set are ignored;
+        /// ( By default host id is added to prevent snowball answering ).
+        /// </summary>
+        public HashSet<string> BlackList = new HashSet<string>();
 
-        #endregion
+        public readonly Session _s;
 
         #region Public Fields
         public string _my_id { get; private set; }
@@ -55,7 +65,7 @@ namespace vk_dotnet
         {
             _s = new Session(token);
             _s.SignInAsync();// Wait();
-            _getMyId().Wait();
+            BlackList.Add(_getMyId().Result);
         }
 
         #endregion
@@ -96,7 +106,11 @@ namespace vk_dotnet
                 List<List<string>> updates = await _s.LongPollServer.CallLongPoll();
                 List<Message> incoming_messages = LongPoll_Methods.ParseEventForMessages(updates);
                 foreach (var msg in incoming_messages) {
-                    if (msg.User_id == 0) continue;
+                    if (BlackList.Contains(msg.User_id)) {
+                        Console.WriteLine(
+                            $"Ignoring message from {msg.User_id} cause it is in a black list.");
+                        continue;
+                    };
                     Message args = msg;
                     OnIncomingMessage(args);
 
@@ -106,10 +120,10 @@ namespace vk_dotnet
 
         private async Task<string> _getMyId()
         {
-            string id = "";
             List<User> answer = await _s.Users.Get();
-           // User me = answer[0];
-            return id;
+            User me = answer[0];
+            Console.WriteLine("My id is: "+me.id);
+            return me.id;
         }
         #endregion
 

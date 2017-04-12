@@ -19,14 +19,14 @@ namespace vk_dotnet_Tests
         public async void CallAPI_ReturnsResponseString()
         {
             // arrange
-            string req  = "https://api.vk.com/method/users.get?user_id=210700286&v=5.52";
+            string req = "https://api.vk.com/method/users.get?user_id=210700286&v=5.52";
 
             // act
             string r = await vk_dotnet.Methods.Method.CallApiAsync(req);
 
             // assert
             Assert.IsType<string>(r);
-            
+
 
         }
 
@@ -36,7 +36,7 @@ namespace vk_dotnet_Tests
             // arrange
 
             // act
-  
+
             // assert
             await Assert.ThrowsAnyAsync<ApiException>(_sendInvalidReq);
         }
@@ -95,7 +95,7 @@ namespace vk_dotnet_Tests
         {
             string invalid_req = "https://api.vk.com/method/uAAAAAAAAsrs.gasdfet?user_id=210700286&v=5.52";
             await vk_dotnet.Methods.Method.CallApiAsync(invalid_req);
-            
+
         }
 
 

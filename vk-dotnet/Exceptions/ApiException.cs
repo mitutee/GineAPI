@@ -10,7 +10,7 @@ namespace vk_dotnet
     /// </summary>
     public class ApiException : Exception
     {
-
+       
         /// <summary>
         /// Code of the error;
         /// For detailed info check https://vk.com/dev/errors

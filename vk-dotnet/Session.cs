@@ -4,21 +4,13 @@ using System.Text;
 using System.Net.Http;
 using vk_dotnet.Methods;
 using System.Threading.Tasks;
+using vk_dotnet.Objects;
 
 namespace vk_dotnet
 {
     public class Session
     {
-
-        #region Static Members
-
-        #endregion
-
-        #region Private Fields
         private string _token { get; set; }
-        private string _login { get; set; }
-        private string _pass { get; set; }
-        #endregion
 
         #region API METHODS
         public Users_Methods Users;
@@ -28,7 +20,7 @@ namespace vk_dotnet
         public LongPoll_Methods LongPollServer;
 
         public Account_Methods Account;
-        private object my_id;
+
 
         /// <summary>
         /// Initializing Methods with the given token
@@ -43,30 +35,20 @@ namespace vk_dotnet
         }
         #endregion
 
-        #region Constructors
+
         public Session(string token)
         {
             _token = token;
+            SignInAsync();
         }
 
-        public Session(string login, string password)
+
+
+        public async Task SignInAsync()
         {
-            _login = login;
-            _pass = password;
-        }
-
-        #endregion
-
-        #region Public Methods
-        public void SignInAsync()
-        {
-
-            //if (_token == null) {
-            //    _token = await Method.LoginPasswordAutorization(_login, _pass);
-            //}
-          //  my_id = Method.ValidateToken(_token);
+            //User me = Account.
             init(_token);
         }
-        #endregion
+
     }
 }

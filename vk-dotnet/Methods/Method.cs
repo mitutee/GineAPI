@@ -4,7 +4,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net;
+
 using System.Net.Http;
+
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using vk_dotnet.Local;
@@ -14,16 +16,41 @@ namespace vk_dotnet.Methods
     /// <summary>
     /// Base class for all other methods.
     /// </summary>
-    public class Method
+    public abstract class Method
     {
 
         #region Static Members
         private static string _mainURI = "https://api.vk.com/method";
+        /// <summary>
+        /// Generates URI for calling particular method.
+        /// </summary>
+        /// <param name="method">Method to call [ e.g. "messages.send" ]</param>
+        /// <param name="parameters">other parameters</param>
+        /// <returns>URI for calling your method.</returns>
+        public static string GetMethodUri(string method, params string[] parameters)
+        {
+
+            string prms = "";
+            int i = 0;
+            for (; i < parameters.Length - 1; i++) {
+                prms += parameters[i] + '&';
+            }
+            prms += parameters[i];
+
+            string request_uri = $"{_mainURI}/{method}?{prms}&v=5.62";
+            return request_uri;
 
 
+        }
 
+        /// <summary>
+        /// Sends the GET request
+        /// </summary>
+        /// <param name="request_uri">URI to call</param>
+        /// <returns>Response string</returns>
         public static async Task<string> SendGetAsync(string request_uri)
         {
+            
             using (var cl = new HttpClient()) {
 
                 var res = await cl.GetAsync(request_uri);
@@ -31,24 +58,64 @@ namespace vk_dotnet.Methods
             }
         }
 
-        public static async Task<string> SendPostAsync(string request_uri, string login, string password)
+        /// <summary>
+        /// Makes request to the API with the specified URI;
+        /// </summary>
+        /// <param name="req">URI to request</param>
+        /// <returns> Response in the string(json) format or throws a corresponding exception. </returns>
+        public static async Task<string> CallApiAsync(string req)
         {
+            string raw_json = await SendGetAsync(req);
+            JObject o = JObject.Parse(raw_json);
 
-            using (var cl = new HttpClient()) {
-                var content = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string, string>("act", "login"),
-                    new KeyValuePair<string, string>("al_frame", "al_frame"),
-                    new KeyValuePair<string, string>("_origin", "https://vk.com"),
-                    new KeyValuePair<string, string>("utf8", "1"),
-                    new KeyValuePair<string, string>("email", login),
-                    new KeyValuePair<string, string>("pass", password),
-                    new KeyValuePair<string, string>("lg_h", login),
-                });
-                var res = await cl.PostAsync(request_uri, content);
-                return await res.Content.ReadAsStringAsync();
+            #region throwing exception if it is there
+            if (o["error"] != null) {
+                string s = o["error"].ToString();
+                Error error = JsonConvert.DeserializeObject<Error>(s);
+                switch (error.error_code) {
+                    case 5:
+                        throw new AutorizationException(error);
+                    default:
+                        throw new ApiException(error);
+                }
+            }
+            #endregion
+            try {
+
+                string res = o["response"].ToString();
+                return res;
+            }
+            catch (Newtonsoft.Json.JsonReaderException e) {
+                Console.Write("Catched");
+                throw JsonConvert.DeserializeObject<ApiException>(o["error"]
+                    .ToString());
+
+            }
+            catch (Exception e) {
+
+                throw;
             }
         }
+
+
+        //public static async Task<string> SendPostAsync(string request_uri, string login, string password)
+        //{
+
+        //    using (var cl = new HttpClient()) {
+        //        var content = new FormUrlEncodedContent(new[]
+        //        {
+        //            new KeyValuePair<string, string>("act", "login"),
+        //            new KeyValuePair<string, string>("al_frame", "al_frame"),
+        //            new KeyValuePair<string, string>("_origin", "https://vk.com"),
+        //            new KeyValuePair<string, string>("utf8", "1"),
+        //            new KeyValuePair<string, string>("email", login),
+        //            new KeyValuePair<string, string>("pass", password),
+        //            new KeyValuePair<string, string>("lg_h", login),
+        //        });
+        //        var res = await cl.PostAsync(request_uri, content);
+        //        return await res.Content.ReadAsStringAsync();
+        //    }
+        //}
 
 
 
@@ -182,97 +249,18 @@ namespace vk_dotnet.Methods
             return match.Groups[1].Value;
 
         }
-        #endregion
+#endregion
 
-        #endregion
+#endregion
 
-        #region Private Fields
         protected string _token;
-
-        #endregion
-
-        #region Public Fields
-
-        #endregion
 
         #region Constructors
         public Method(string token)
         {
             _token = token;
         }
-        #endregion
-
-        #region Public Methods
-        public static string GetMethodUri(string method, params string[] parameters)
-        {
-
-            string prms = "";
-            int i = 0;
-            for (; i < parameters.Length - 1; i++) {
-                prms += parameters[i] + '&';
-            }
-            prms += parameters[i];
-
-            string request_uri = $"{_mainURI}/{method}?{prms}&v=5.62";
-            return request_uri;
-
-
-        }
-        #endregion
-
-
-        #region Private Methods 
-
-
-
-        private bool _isAnError(string response)
-        {
-
-            return false;
-        }
-
-        /// <summary>
-        /// Makes request to the API with the specified URI;
-        /// </summary>
-        /// <param name="req">URI to request</param>
-        /// <returns> Response in the string(json) format or throws a corresponding exception. </returns>
-        public static async Task<string> CallApiAsync(string req)
-        {
-            string raw_json = await SendGetAsync(req);
-            JObject o = JObject.Parse(raw_json);
-
-            #region throwing exception if it is there
-            if (o["error"] != null) {
-                string s = o["error"].ToString();
-                Error error = JsonConvert.DeserializeObject<Error>(s);                
-                switch (error.error_code) {
-                    case 5:
-                        throw new AutorizationException(error);
-                    default:
-                        throw new ApiException(error);
-                }
-            } 
-            #endregion
-            try {
-
-                string res = o["response"].ToString();
-                return res;
-            }
-            catch (Newtonsoft.Json.JsonReaderException e) {
-                Console.Write("Catched");
-                throw JsonConvert.DeserializeObject<ApiException>(o["error"]
-                    .ToString());
-
-            }
-            catch (Exception e) {
-
-                throw;
-            }
-        }
-
-
-        #endregion
-
+#endregion
 
     }
 }

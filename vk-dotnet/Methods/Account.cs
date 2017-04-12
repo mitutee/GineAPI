@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
 using vk_dotnet.Objects;
+using Newtonsoft.Json;
 
 namespace vk_dotnet.Methods
 {
@@ -15,17 +16,14 @@ namespace vk_dotnet.Methods
         /// TODO
         /// </summary>
         /// <returns></returns>
-        public async Task<User> GetInfo()
-        {
-            string request = GetMethodUri("account.getInfo",
-                $"access_token={_token}");
-            string response = await SendGetAsync(request);
-
-            User me = new User();
-
-            Console.WriteLine(response);
-            return me;
-        }
+        //public async Task<User> GetInfo()
+        //{
+        //    string request = GetMethodUri("account.getInfo",
+        //        $"access_token={_token}");
+        //    string response = await CallApiAsync(request);
+        //    User me = JsonConvert.DeserializeObject<User>(response);
+        //    return me;
+        //}
 
         public async Task<User> GetProfileInfo()
         {

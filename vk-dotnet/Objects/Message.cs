@@ -7,7 +7,7 @@ namespace vk_dotnet.Objects
     public class Message
     {
         public int Id { get; set; }
-        public int User_id { get; set; }
+        public string User_id { get; set; }
         public int From_id { get; set; }
         public int Date { get; set; }
         public int Read_state { get; set; }

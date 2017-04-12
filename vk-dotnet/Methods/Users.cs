@@ -30,29 +30,11 @@ namespace vk_dotnet.Methods
             request = GetMethodUri("users.get",
                 $"user_ids={String.Join(",", user_ids)}");
             }
-
             
             string response = await CallApiAsync(request);
 
-            Console.WriteLine(response);
-            List<User> list_of_users = new List<User>();
-            try
-            {
-                JToken json_users_array = JObject.Parse(response);
-                foreach(var user in json_users_array)
-                {
-                    Console.WriteLine(user.ToString());
-                    list_of_users.Add(JsonConvert.DeserializeObject<User>(user.ToString()));
-                }
-                
-            }
-            catch (System.Exception e)
-            {
-                
-               Console.WriteLine(e.Message);
-            }
+            List<User> list_of_users = JsonConvert.DeserializeObject<List<User>>(response);
 
- 
             return list_of_users;
         }
     }

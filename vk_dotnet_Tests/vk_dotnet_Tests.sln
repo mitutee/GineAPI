@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vk_dotnet_Tests", "vk_dotnet_Tests.csproj", "{19DCC8AF-C64F-4012-8356-A8B8B8DE6739}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vk-dotnet", "..\vk-dotnet\vk-dotnet.csproj", "{2C7B23CA-BA8B-46FC-98CA-4C65E9A19688}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vk_dotnet_Console", "vk_dotnet_Console\vk_dotnet_Console.csproj", "{D69ACACA-D74F-46D5-BB90-80D533F85F1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{19DCC8AF-C64F-4012-8356-A8B8B8DE6739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19DCC8AF-C64F-4012-8356-A8B8B8DE6739}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19DCC8AF-C64F-4012-8356-A8B8B8DE6739}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19DCC8AF-C64F-4012-8356-A8B8B8DE6739}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C7B23CA-BA8B-46FC-98CA-4C65E9A19688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C7B23CA-BA8B-46FC-98CA-4C65E9A19688}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C7B23CA-BA8B-46FC-98CA-4C65E9A19688}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C7B23CA-BA8B-46FC-98CA-4C65E9A19688}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D69ACACA-D74F-46D5-BB90-80D533F85F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D69ACACA-D74F-46D5-BB90-80D533F85F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D69ACACA-D74F-46D5-BB90-80D533F85F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D69ACACA-D74F-46D5-BB90-80D533F85F1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
