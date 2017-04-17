@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using vk_dotnet.Local;
 
@@ -52,9 +53,18 @@ namespace vk_dotnet.Methods
         {
             
             using (var cl = new HttpClient()) {
-
-                var res = await cl.GetAsync(request_uri);
-                return await res.Content.ReadAsStringAsync();
+                send_req:
+                try {
+                    var res = await cl.GetAsync(request_uri);
+                    return await res.Content.ReadAsStringAsync();
+                }
+                catch (Exception ex) {
+                    Console.WriteLine($"\n{DateTime.Now}\nConnection error!");
+                    Console.WriteLine($"Request to send: {request_uri}");
+                    Console.WriteLine("Trying to send it again..");
+                    Thread.Sleep(5000);
+                    goto send_req;
+                }
             }
         }
 

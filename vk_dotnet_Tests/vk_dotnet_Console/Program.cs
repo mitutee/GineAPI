@@ -14,17 +14,27 @@ namespace vk_dotnet_Console
 
         static void Main(string[] args)
         {
+            #region Initialisation
             BotClient cl = new BotClient(token);
-            cl.IncomingMessage += MessageHandler;
+            cl.IncommingTextMessage += MessageHandler;
             var a = cl._s.Users.Get().Result;
-            cl.StartListeningAsync();
+            cl.SendTextMessageAsync("2000000069", "My Message");
+            cl.StartListening();
+            //  cl.StartListening();
+            Console.WriteLine("ANY KEY TO BE PRESSED!");
+            Console.ReadKey(); 
+            #endregion
 
-            Console.ReadKey();
+
         }
 
         private static void MessageHandler(BotClient sender, Message e)
         {
-            sender.SendTextMessageAsync(e.User_id.ToString(), "Hello world");
+            Console.WriteLine("MESSAGE DETECTED");
+
+            
+            Console.WriteLine("-----------------");
+         //   sender.SendTextMessageAsync(e.User_id.ToString(), "Hello world");
         }
     }
 }

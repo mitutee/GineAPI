@@ -65,7 +65,11 @@ namespace vk_dotnet
         {
             _s = new Session(token);
             _s.SignInAsync();// Wait();
+
             BlackList.Add(_getMyId().Result);
+
+
+
         }
 
         #endregion
@@ -76,6 +80,12 @@ namespace vk_dotnet
             _s.LongPollServer.GetLongPollServer().Wait();
             Task.Factory.StartNew(_startListeningAsync);
 
+        }
+
+        public void StartListening()
+        {
+            _s.LongPollServer.GetLongPollServer().Wait();
+            _startListening();
         }
 
         public async Task<string> SendTextMessageAsync(string user_id, string text)
@@ -89,12 +99,11 @@ namespace vk_dotnet
         #region Events
         public delegate void BotEventHandler<TArgs>(BotClient sender, TArgs e);
 
-        public BotEventHandler<Message> IncomingMessage;
+        public BotEventHandler<Message> IncommingTextMessage;
 
-        private void OnIncomingMessage(Message arg)
+        private void OnIncomingTextMessage(Message arg)
         {
-            if (IncomingMessage != null)
-                IncomingMessage(this, arg);
+            IncommingTextMessage?.Invoke(this, arg);
         }
 
         #endregion
@@ -112,7 +121,32 @@ namespace vk_dotnet
                         continue;
                     };
                     Message args = msg;
-                    OnIncomingMessage(args);
+                    OnIncomingTextMessage(args);
+
+                }
+            }
+        }
+
+        private void _startListening()
+        {
+            while (true) {
+                List<List<string>> updates = _s.LongPollServer.CallLongPoll().Result;
+                //Console.WriteLine("Updates: ");
+                //updates.ForEach(li => {
+                //    Console.WriteLine("----------");
+                //    li.ForEach(str => Console.WriteLine(str));
+                //    Console.WriteLine("----------");
+                //    });
+                //Console.WriteLine("****************************");
+                List<Message> incoming_messages = LongPoll_Methods.ParseEventForMessages(updates);
+                foreach (var msg in incoming_messages) {
+                    if (BlackList.Contains(msg.User_id)) {
+                        Console.WriteLine(
+                            $"Ignoring message from {msg.User_id} cause it is in a black list.");
+                        continue;
+                    };
+                    Message args = msg;
+                    OnIncomingTextMessage(args);
 
                 }
             }
@@ -122,7 +156,7 @@ namespace vk_dotnet
         {
             List<User> answer = await _s.Users.Get();
             User me = answer[0];
-            Console.WriteLine("My id is: "+me.id);
+            Console.WriteLine("My id is: " + me.id);
             return me.id;
         }
         #endregion

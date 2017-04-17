@@ -84,7 +84,7 @@ namespace vk_dotnet.Methods
         {
             Message message = new Message();
             message.Id = Int32.Parse(ev[1]);
-            message.User_id = ev[3];
+            message.User_id = ev[3];// Console.WriteLine("ID IS : "+ev[3]);
             message.Body = ev[6];
             return message;
         }
