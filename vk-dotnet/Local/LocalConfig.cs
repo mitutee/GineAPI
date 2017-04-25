@@ -31,7 +31,9 @@ namespace vk_dotnet.Local
             {
                 json = System.IO.File.ReadAllText(login_file);
             }
-            catch(System.IO.FileNotFoundException err)
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (System.IO.FileNotFoundException err)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
                 Console.WriteLine("Could not find {0} file with settings. Creting blank config file..", login_file);
                 createEmptyLoginConfig();

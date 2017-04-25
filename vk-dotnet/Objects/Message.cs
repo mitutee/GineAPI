@@ -20,7 +20,6 @@ namespace vk_dotnet.Objects
         public int Important { get; set; }
         public int Deleted { get; set; }
         public string Random_id { get; set; }
-
-
+        
     }
 }

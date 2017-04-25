@@ -44,7 +44,7 @@ namespace vk_dotnet
 
 
 
-        public async Task SignInAsync()
+        public void SignInAsync()
         {
             //User me = Account.
             init(_token);
