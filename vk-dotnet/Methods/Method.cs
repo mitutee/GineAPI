@@ -53,7 +53,11 @@ namespace vk_dotnet.Methods
         {
             
             using (var cl = new HttpClient()) {
+                bool resentFlag = false;
                 send_req:
+                if (resentFlag) {
+                    Console.WriteLine("Succsesfully resended.");
+                }
                 try {
                     var res = await cl.GetAsync(request_uri);
                     return await res.Content.ReadAsStringAsync();
@@ -63,6 +67,7 @@ namespace vk_dotnet.Methods
                     Console.WriteLine($"Request to send: {request_uri}");
                     Console.WriteLine("Trying to send it again..");
                     Thread.Sleep(5000);
+                    resentFlag = true;
                     goto send_req;
                 }
             }
