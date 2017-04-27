@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using System;
@@ -55,11 +55,9 @@ namespace vk_dotnet.Methods
             using (var cl = new HttpClient()) {
                 bool resentFlag = false;
                 send_req:
-                if (resentFlag) {
-                    Console.WriteLine("Succsesfully resended.");
-                }
                 try {
                     var res = await cl.GetAsync(request_uri);
+                    if(resentFlag){Console.WriteLine("Resended succsessfully;");}
                     return await res.Content.ReadAsStringAsync();
                 }
                 catch (Exception ex) {
