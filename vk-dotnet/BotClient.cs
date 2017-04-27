@@ -99,11 +99,11 @@ namespace vk_dotnet
         #region Events
         public delegate void BotEventHandler<TArgs>(BotClient sender, TArgs e);
 
-        public BotEventHandler<Message> IncommingTextMessage;
+        public BotEventHandler<Message> IncomingTextMessage;
 
         private void OnIncomingTextMessage(Message arg)
         {
-            IncommingTextMessage?.Invoke(this, arg);
+            IncomingTextMessage?.Invoke(this, arg);
         }
 
         #endregion
