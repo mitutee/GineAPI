@@ -154,10 +154,20 @@ namespace vk_dotnet
 
         private async Task<string> _getMyId()
         {
-            List<User> answer = await _s.Users.Get();
-            User me = answer[0];
-            Console.WriteLine("My id is: " + me.id);
-            return me.id;
+            try {
+                List<User> answer = await _s.Users.Get();
+                User me = answer[0];
+                Console.WriteLine("My id is: " + me.id);
+                return me.id;
+            }
+            catch (AutorizationException e) when (e.Message.Contains("method is unavailable with group")) {
+                Console.WriteLine("Group token is given.");
+                return "";
+            }
+            catch (AutorizationException e) {
+                Console.WriteLine(e.Message);
+                throw e;
+            }
         }
         #endregion
 

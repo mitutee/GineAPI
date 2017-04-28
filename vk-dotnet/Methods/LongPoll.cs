@@ -18,62 +18,57 @@ namespace vk_dotnet.Methods
         public string _lpkey { get; private set; }
         public string _lpts { get; private set; }
 
-        /// <summary>
-        /// Gets session data for Long Poll server and saves is.
-        /// </summary>
-        /// <returns></returns>
         public async Task GetLongPollServer()
         {
             establish_LP:
             string request = GetMethodUri("messages.getLongPollServer",
                 "use_ssl=1",
                 "need_pts=1",
+                "v=5.56",
                 $"access_token={_token}"
                 );
-            try
-            {
-                string response = await SendGetAsync(request);
-
-                JObject o = JObject.Parse(response);
-                _lpserver = o["response"]["server"].ToString();
-                _lpkey = o["response"]["key"].ToString();
-                _lpts = o["response"]["ts"].ToString();
+            try {
+                string response = await CallApiAsync(request);
+                var longPoll = JsonConvert.DeserializeObject<GetLongPollResponse>(response);
+                _lpserver = longPoll.server;
+                _lpkey = longPoll.key;
+                _lpts = longPoll.ts;
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine(e.Message);
                 goto establish_LP;
             }
-            Console.WriteLine("Connection with Long Poll server configured.");
+
 
 
         }
 
 
-        /// <summary>
-        /// Listens to the Long Poll server
-        /// </summary>
-        /// <returns> Raw ( as a string ) list of updates. </returns>
+
         public async Task<List<List<string>>> CallLongPoll()
         {
+            call_LP:
             string request = $"https://{_lpserver}?act=a_check&key={_lpkey}&ts={_lpts}&wait=25&mode=128&version=1";
 
             string response = await SendGetAsync(request);
 
-            JObject o = JObject.Parse(response);
-            _lpts = o["ts"].ToString();
+            var longPoll = JsonConvert.DeserializeObject<CallLongPollResponse>(response);
 
-            List<List<string>> updates = JsonConvert.DeserializeObject<List<List<string>>>(o["updates"].ToString());
-            return updates;
+            if (longPoll.Failed != null) {
+                await GetLongPollServer();
+                goto call_LP;
+            }
+            else {
+                _lpts = longPoll.ts;
+            }
+            return longPoll.Updates;
         }
 
         public static List<Message> ParseEventForMessages(List<List<string>> updates)
         {
             List<Message> messages = new List<Message>();
-            foreach (var ev in updates)
-            {
-                if (hasIncomeMessage(ev))
-                {
+            foreach (var ev in updates) {
+                if (hasIncomeMessage(ev)) {
                     Message m = parseMessage(ev);
                     messages.Add(m);
                 }
@@ -91,6 +86,6 @@ namespace vk_dotnet.Methods
         }
 
         private static bool hasIncomeMessage(List<string> ev) => (Int32.Parse(ev[0]) == 4) && ((Int32.Parse(ev[2]) & 2) == 0);
-        
+
     }
 }
