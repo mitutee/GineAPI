@@ -19,7 +19,7 @@ namespace vk_dotnet_Tests_Console
 
         private static void IncomingMessageHandler(BotClient sender, Message e)
         {
-            sender.SendTextMessageAsync(e.User_id.ToString(), "Hello from MyBot!");
+            sender.SendTextMessageAsync(e.User_id.ToString(), "Hello from MyBot!").Wait();
         }
     }
 }

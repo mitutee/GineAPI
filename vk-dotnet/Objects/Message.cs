@@ -8,7 +8,7 @@ namespace vk_dotnet.Objects
     {
         public int Id { get; set; }
         public string User_id { get; set; }
-        public int From_id { get; set; }
+        public string From_id { get; set; }
         public int Date { get; set; }
         public int Read_state { get; set; }
         public int Out { get; set; }
