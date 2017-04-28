@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using vk_dotnet.Local;
-                
+
 namespace vk_dotnet.Methods
 {
     /// <summary>
@@ -22,6 +22,11 @@ namespace vk_dotnet.Methods
 
         #region Static Members
         private static string _mainURI = "https://api.vk.com/method";
+        /// <summary>
+        /// Version of the API to work with.
+        /// </summary>
+        public static string ApiVersion { get; set; } = "5.63";
+
         /// <summary>
         /// Generates URI for calling particular method.
         /// </summary>
@@ -38,34 +43,10 @@ namespace vk_dotnet.Methods
             }
             prms += parameters[i];
 
-            string request_uri = $"{_mainURI}/{method}?{prms}&v=5.62";
+            string request_uri = $"{_mainURI}/{method}?{prms}&v={ApiVersion}";
             return request_uri;
 
 
-        }
-
-        /// <summary>
-        /// Sends the GET request
-        /// </summary>
-        /// <param name="request_uri">URI to call</param>
-        /// <returns>Response string</returns>
-        public static async Task<string> SendGetAsync(string request_uri)
-        {
-            
-            using (var cl = new HttpClient()) {
-                send_req:
-                try {
-                    var res = await cl.GetAsync(request_uri);
-                    return await res.Content.ReadAsStringAsync();
-                }
-                catch (Exception ex) {
-                    Console.WriteLine($"\n{DateTime.Now}\nConnection error!");
-                    Console.WriteLine($"Request to send: {request_uri}");
-                    Console.WriteLine("Trying to send it again..");
-                    Thread.Sleep(5000);
-                    goto send_req;
-                }
-            }
         }
 
         /// <summary>
@@ -102,32 +83,10 @@ namespace vk_dotnet.Methods
 
             }
             catch (Exception e) {
-
+                Console.WriteLine(e.Message);
                 throw;
             }
         }
-
-
-        //public static async Task<string> SendPostAsync(string request_uri, string login, string password)
-        //{
-
-        //    using (var cl = new HttpClient()) {
-        //        var content = new FormUrlEncodedContent(new[]
-        //        {
-        //            new KeyValuePair<string, string>("act", "login"),
-        //            new KeyValuePair<string, string>("al_frame", "al_frame"),
-        //            new KeyValuePair<string, string>("_origin", "https://vk.com"),
-        //            new KeyValuePair<string, string>("utf8", "1"),
-        //            new KeyValuePair<string, string>("email", login),
-        //            new KeyValuePair<string, string>("pass", password),
-        //            new KeyValuePair<string, string>("lg_h", login),
-        //        });
-        //        var res = await cl.PostAsync(request_uri, content);
-        //        return await res.Content.ReadAsStringAsync();
-        //    }
-        //}
-
-
 
         #region Autorization with login and pass
         public static async Task<string> LoginPasswordAutorization(string login, string password)
@@ -259,9 +218,9 @@ namespace vk_dotnet.Methods
             return match.Groups[1].Value;
 
         }
-#endregion
+        #endregion
 
-#endregion
+        #endregion
 
         protected string _token;
 
@@ -270,7 +229,51 @@ namespace vk_dotnet.Methods
         {
             _token = token;
         }
-#endregion
+        #endregion
 
+        #region Working with HTTP
+        /// <summary>
+        /// Sends the GET request
+        /// </summary>
+        /// <param name="request_uri">URI to call</param>
+        /// <returns>Response string</returns>
+        public static async Task<string> SendGetAsync(string request_uri)
+        {
+
+            using (var cl = new HttpClient()) {
+                send_req:
+                try {
+                    var res = await cl.GetAsync(request_uri);
+                    return await res.Content.ReadAsStringAsync();
+                }
+                catch (Exception ex) {
+                    Console.WriteLine($"\n{DateTime.Now}\nConnection error!");
+                    Console.WriteLine($"Request to send: {request_uri}");
+                    Console.WriteLine("Trying to send it again..");
+                    Thread.Sleep(5000);
+                    goto send_req;
+                }
+            }
+        }
+        //public static async Task<string> SendPostAsync(string request_uri, string login, string password)
+        //{
+
+        //    using (var cl = new HttpClient()) {
+        //        var content = new FormUrlEncodedContent(new[]
+        //        {
+        //            new KeyValuePair<string, string>("act", "login"),
+        //            new KeyValuePair<string, string>("al_frame", "al_frame"),
+        //            new KeyValuePair<string, string>("_origin", "https://vk.com"),
+        //            new KeyValuePair<string, string>("utf8", "1"),
+        //            new KeyValuePair<string, string>("email", login),
+        //            new KeyValuePair<string, string>("pass", password),
+        //            new KeyValuePair<string, string>("lg_h", login),
+        //        });
+        //        var res = await cl.PostAsync(request_uri, content);
+        //        return await res.Content.ReadAsStringAsync();
+        //    }
+        //}
+
+        #endregion
     }
 }

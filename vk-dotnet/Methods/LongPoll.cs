@@ -18,13 +18,16 @@ namespace vk_dotnet.Methods
         public string _lpkey { get; private set; }
         public string _lpts { get; private set; }
 
+        /// <summary>
+        /// Gets session data for Long Poll server and saves is.
+        /// </summary>
+        /// <returns></returns>
         public async Task GetLongPollServer()
         {
             establish_LP:
             string request = GetMethodUri("messages.getLongPollServer",
                 "use_ssl=1",
                 "need_pts=1",
-                "v=5.56",
                 $"access_token={_token}"
                 );
             try
@@ -41,28 +44,26 @@ namespace vk_dotnet.Methods
                 Console.WriteLine(e.Message);
                 goto establish_LP;
             }
-
+            Console.WriteLine("Connection with Long Poll server configured.");
 
 
         }
 
 
-
+        /// <summary>
+        /// Listens to the Long Poll server
+        /// </summary>
+        /// <returns> Raw ( as a string ) list of updates. </returns>
         public async Task<List<List<string>>> CallLongPoll()
         {
             string request = $"https://{_lpserver}?act=a_check&key={_lpkey}&ts={_lpts}&wait=25&mode=128&version=1";
 
             string response = await SendGetAsync(request);
 
-
             JObject o = JObject.Parse(response);
             _lpts = o["ts"].ToString();
 
             List<List<string>> updates = JsonConvert.DeserializeObject<List<List<string>>>(o["updates"].ToString());
-
-            //pdates.ForEach((e) => e.ForEach((el) => Console.WriteLine(el)));
-
-
             return updates;
         }
 
