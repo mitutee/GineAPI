@@ -11,9 +11,7 @@ namespace vk_dotnet.Methods
     public class Users_Methods : Method
     {
         public Users_Methods(string token) : base(token)
-        {
-
-        }
+        { }
 
         #region API Method
         /// <summary>
@@ -41,7 +39,7 @@ namespace vk_dotnet.Methods
             List<User> list_of_users = JsonConvert.DeserializeObject<List<User>>(response);
 
             return list_of_users;
-        } 
+        }
         #endregion
     }
 }

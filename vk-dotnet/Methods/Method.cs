@@ -232,6 +232,9 @@ namespace vk_dotnet.Methods
         #endregion
 
         #region Working with HTTP
+
+        private static readonly HttpClient _client = new HttpClient();
+
         /// <summary>
         /// Sends the GET request
         /// </summary>
@@ -239,21 +242,19 @@ namespace vk_dotnet.Methods
         /// <returns>Response string</returns>
         public static async Task<string> SendGetAsync(string request_uri)
         {
-
-            using (var cl = new HttpClient()) {
-                send_req:
-                try {
-                    var res = await cl.GetAsync(request_uri);
-                    return await res.Content.ReadAsStringAsync();
-                }
-                catch (Exception ex) {
-                    Console.WriteLine($"\n{DateTime.Now}\nConnection error!");
-                    Console.WriteLine($"Request to send: {request_uri}");
-                    Console.WriteLine("Trying to send it again..");
-                    Thread.Sleep(5000);
-                    goto send_req;
-                }
+            send_req:
+            try {
+                var res = await _client.GetAsync(request_uri);
+                return await res.Content.ReadAsStringAsync();
             }
+            catch (Exception ex) {
+                Console.WriteLine($"\n{DateTime.Now}\nConnection error!");
+                Console.WriteLine($"Request to send: {request_uri}");
+                Console.WriteLine("Trying to send it again..");
+                Thread.Sleep(5000);
+                goto send_req;
+            }
+
         }
         //public static async Task<string> SendPostAsync(string request_uri, string login, string password)
         //{
