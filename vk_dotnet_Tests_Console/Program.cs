@@ -6,7 +6,7 @@ namespace vk_dotnet_Tests_Console
 {
     class Program
     {
-        private static string myToken = "98ff2ea0959699310da1594655ec3465dfba3f2a27ea61ef4139016fb5dd6ac1a9335a61616e38eb1ad6a";
+        private static string myToken = "77735e98916aff3c0773497c6023269cec0806362c1befdeef34d6ef1603c70537eb54614fde5aa088155";
 
         static void Main(string[] args)
         {
@@ -19,7 +19,10 @@ namespace vk_dotnet_Tests_Console
 
         private static void IncomingMessageHandler(BotClient sender, Message e)
         {
-            sender.SendTextMessageAsync(e.User_id.ToString(), "Hello from MyBot!").Wait();
+            if (e.PeerType == Message.ChatType.Group) {
+                Console.WriteLine("Group!");
+            }
+            sender.SendTextMessageAsync(e.Peer_id.ToString(), "Hello from MyBot!").Wait();
         }
     }
 }

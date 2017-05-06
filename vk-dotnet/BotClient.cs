@@ -115,9 +115,9 @@ namespace vk_dotnet
                 List<List<string>> updates = await _s.LongPollServer.CallLongPoll();
                 List<Message> incoming_messages = LongPoll_Methods.ParseEventForMessages(updates);
                 foreach (var msg in incoming_messages) {
-                    if (BlackList.Contains(msg.User_id)) {
+                    if (BlackList.Contains(msg.Peer_id)) {
                         Console.WriteLine(
-                            $"Ignoring message from {msg.User_id} cause it is in a black list.");
+                            $"Ignoring message from {msg.Peer_id} cause it is in a black list.");
                         continue;
                     };
                     Message args = msg;
@@ -140,9 +140,9 @@ namespace vk_dotnet
                 //Console.WriteLine("****************************");
                 List<Message> incoming_messages = LongPoll_Methods.ParseEventForMessages(updates);
                 foreach (var msg in incoming_messages) {
-                    if (BlackList.Contains(msg.User_id)) {
+                    if (BlackList.Contains(msg.Peer_id)) {
                         Console.WriteLine(
-                            $"Ignoring message from {msg.User_id} cause it is in a black list.");
+                            $"Ignoring message from {msg.Peer_id} cause it is in a black list.");
                         continue;
                     };
                     Message args = msg;
