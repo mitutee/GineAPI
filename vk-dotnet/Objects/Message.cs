@@ -15,6 +15,7 @@ namespace vk_dotnet.Objects
             set {
                 peer_id = value;
 
+                if (value == null) return;
                 long p_id = Int64.Parse(value);
                 if (p_id > 0 && p_id < 2e9) {
                     PeerType = ChatType.User;
