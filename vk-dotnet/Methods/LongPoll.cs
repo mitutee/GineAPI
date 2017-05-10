@@ -53,9 +53,19 @@ namespace vk_dotnet.Methods
             string response = await SendGetAsync(request);
 
             Console.WriteLine($"{DateTime.Now} --- {response}");
-            var longPoll = JsonConvert.DeserializeObject<CallLongPollResponse>(response);
+            CallLongPollResponse longPoll;
+            try
+            {
+                longPoll = JsonConvert.DeserializeObject<CallLongPollResponse>(response);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"EXCEPTION --- {DateTime.Now} --- {e.Message}");
+                await GetLongPollServer();
+                goto call_LP;
+            }
 
-            if (longPoll.Failed != null) {
+            if (longPoll.Failed != null || longPoll.ts == null) {
                 Console.WriteLine($"@ERR --- {DateTime.Now} --- {longPoll.Failed} --- {response}");
                 await GetLongPollServer();
                 goto call_LP;
