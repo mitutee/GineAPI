@@ -67,14 +67,9 @@ namespace vk_dotnet
         //    // _getMyId();
         //}
         public BotClient(string token) : base(token)
-        {
-            
+        {            
             SignInAsync();// Wait();
-
-            BlackList.Add(_getMyId().Result);
-
-
-
+            //     BlackList.Add(_getMyId().Result);
         }
 
         #endregion

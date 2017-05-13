@@ -6,13 +6,13 @@ namespace vk_dotnet_Tests_Console
 {
     class Program
     {
-        private static string myToken = "77735e98916aff3c0773497c6023269cec0806362c1befdeef34d6ef1603c70537eb54614fde5aa088155";
+        private static string myToken = "a7474da0059a51709b95871b85907291756c23f98555459def4256f03a58a376ced01d2b8373ae738e7bc";
 
         static void Main(string[] args)
         {
             BotClient MyBot = new BotClient(myToken);
-            MyBot.IncomingTextMessage += IncomingMessageHandler;
-            MyBot.StartListeningAsync();
+
+            Console.WriteLine(MyBot.Groups.GetCallbackConfirmationCode("146335820"));
 
             Console.ReadKey(); // Otherwise program will finish immediately
         }

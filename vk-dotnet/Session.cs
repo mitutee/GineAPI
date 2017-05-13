@@ -34,6 +34,7 @@ namespace vk_dotnet
             Messages = new Messages_Methods(token);
             LongPollServer = new LongPoll_Methods(token);
             Account = new Account_Methods(token);
+            Groups = new Groups_Methods(token);
         }
         #endregion
 
