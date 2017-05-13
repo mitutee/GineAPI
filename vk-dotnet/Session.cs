@@ -21,6 +21,8 @@ namespace vk_dotnet
 
         public Account_Methods Account;
 
+        public Groups_Methods Groups;
+
 
         /// <summary>
         /// Initializing Methods with the given token

@@ -11,7 +11,7 @@ namespace vk_dotnet
     /// Wrapper for vk API;
     /// Used for automating tasks;
     /// </summary>
-    public class BotClient
+    public class BotClient : Session
     {
         #region Static Members
         public static bool TokenIsValid(string token)
@@ -47,7 +47,7 @@ namespace vk_dotnet
         /// </summary>
         public HashSet<string> BlackList = new HashSet<string>();
 
-        public readonly Session _s;
+
 
         #region Public Fields
         public string _my_id { get; private set; }
@@ -61,10 +61,10 @@ namespace vk_dotnet
         //    _s.SignInAsync();//.Wait();
         //    // _getMyId();
         //}
-        public BotClient(string token)
+        public BotClient(string token) : base(token)
         {
-            _s = new Session(token);
-            _s.SignInAsync();// Wait();
+            
+            SignInAsync();// Wait();
 
             BlackList.Add(_getMyId().Result);
 
@@ -77,20 +77,20 @@ namespace vk_dotnet
         #region Public Methods
         public void StartListeningAsync()
         {
-            _s.LongPollServer.GetLongPollServer().Wait();
+            LongPollServer.GetLongPollServer().Wait();
             Task.Factory.StartNew(_startListeningAsync);
 
         }
 
         public void StartListening()
         {
-            _s.LongPollServer.GetLongPollServer().Wait();
+            LongPollServer.GetLongPollServer().Wait();
             _startListening();
         }
 
         public async Task<string> SendTextMessageAsync(string user_id, string text)
         {
-            return await _s.Messages.Send(user_id, text);
+            return await Messages.Send(user_id, text);
         }
 
 
@@ -112,7 +112,7 @@ namespace vk_dotnet
         private async Task _startListeningAsync()
         {
             while (true) {
-                List<List<string>> updates = await _s.LongPollServer.CallLongPoll();
+                List<List<string>> updates = await LongPollServer.CallLongPoll();
                 List<Message> incoming_messages = LongPoll_Methods.ParseEventForMessages(updates);
                 foreach (var msg in incoming_messages) {
                     if (BlackList.Contains(msg.Peer_id)) {
@@ -130,7 +130,7 @@ namespace vk_dotnet
         private void _startListening()
         {
             while (true) {
-                List<List<string>> updates = _s.LongPollServer.CallLongPoll().Result;
+                List<List<string>> updates = LongPollServer.CallLongPoll().Result;
                 //Console.WriteLine("Updates: ");
                 //updates.ForEach(li => {
                 //    Console.WriteLine("----------");
@@ -155,7 +155,7 @@ namespace vk_dotnet
         private async Task<string> _getMyId()
         {
             try {
-                List<User> answer = await _s.Users.Get();
+                List<User> answer = await Users.Get();
                 User me = answer[0];
                 Console.WriteLine("My id is: " + me.id);
                 return me.id;
