@@ -10,6 +10,8 @@ namespace vk_dotnet.Objects
         private string peer_id;
         public int Id { get; set; }
 
+        public string User_id { set { Peer_id = value; } }
+
         public string Peer_id {
             get { return peer_id; }
             set {

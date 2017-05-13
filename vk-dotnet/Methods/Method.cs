@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Net;
 
 using System.Net.Http;
-
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -251,7 +251,7 @@ namespace vk_dotnet.Methods
                 Console.WriteLine($"\n{DateTime.Now}\nConnection error!");
                 Console.WriteLine($"Request to send: {request_uri}");
                 Console.WriteLine("Trying to send it again..");
-                Thread.Sleep(5000);
+                await Task.Delay(TimeSpan.FromSeconds(2));
                 goto send_req;
             }
 
