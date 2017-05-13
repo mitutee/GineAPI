@@ -16,9 +16,25 @@ namespace vk_dotnet.Methods
             string request = GetMethodUri("groups.getCallbackConfirmationCode",
                         $"group_id={group_id}",
                         $"access_token={_token}");
-            var res =  CallApiAsync(request).Result;
+            var res = CallApiAsync(request).Result;
             return JsonConvert.DeserializeObject<GroupConfirmCode>(res).Code;
         }
+        public string SetCallbackServer(string group_id, string URI)
+        {
+            string request = GetMethodUri("groups.setCallbackServer",
+                $"group_id={group_id}",
+                $"server_url={URI}",
+                $"access_token={_token}");
+            return SendGetAsync(request).Result;
+        }
 
+        public string SetCallbackSettings(string group_id, bool message_new = true)
+        {
+            string request = GetMethodUri("groups.setCallbackSettings",
+    $"group_id={group_id}",
+    $"message_new={1}",
+    $"access_token={_token}");
+            return SendGetAsync(request).Result;
+        }
     }
 }
