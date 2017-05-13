@@ -14,12 +14,17 @@ namespace vk_dotnet
     public class BotClient
     {
         #region Static Members
-        public static bool TokenIsValid(string token)
+
+        /// <summary>
+        /// Checks if user token allows send messages;
+        /// </summary>
+        /// <param name="token">!USER! token to check</param>
+        /// <returns></returns>
+        public static bool UserToken_MessagesAllowed(string token)
         {
             try {
                 int permissions = Account_Methods.GetAppPermissions(token).Result;
                 return _containsMessageFlag(permissions);
-
             }
             catch (Exception e) {
 
@@ -101,7 +106,7 @@ namespace vk_dotnet
 
         public BotEventHandler<Message> IncomingTextMessage;
 
-        private void OnIncomingTextMessage(Message arg)
+        public void OnIncomingTextMessage(Message arg)
         {
             IncomingTextMessage?.Invoke(this, arg);
         }
