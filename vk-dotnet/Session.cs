@@ -45,14 +45,13 @@ namespace vk_dotnet
         public Session(string token)
         {
             _token = token;
-            SignInAsync();
+            SignIn();
         }
 
 
 
-        public void SignInAsync()
+        public void SignIn()
         {
-            //User me = Account.
             init(_token);
         }
 
