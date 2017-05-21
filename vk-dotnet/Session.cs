@@ -23,6 +23,8 @@ namespace vk_dotnet
 
         public Groups_Methods Groups;
 
+        public Photos_Methods Photos;
+
 
         /// <summary>
         /// Initializing Methods with the given token
@@ -35,6 +37,7 @@ namespace vk_dotnet
             LongPollServer = new LongPoll_Methods(token);
             Account = new Account_Methods(token);
             Groups = new Groups_Methods(token);
+            Photos = new Photos_Methods(token);
         }
         #endregion
 
