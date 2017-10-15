@@ -3,7 +3,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <Compile Include="Infrastructure.fs" />
     <Compile Include="Message.fs" />
+    <Compile Include="QueryBuilders\WallQueryBuilder.fs" />
   </ItemGroup>
 </Project>
