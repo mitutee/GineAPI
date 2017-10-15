@@ -1,5 +1,6 @@
 namespace VkDotNet.Core
 
 module Say =
-    let hello name =
-        printfn "Hello %s" name
+    let message = 12
+
+    
