@@ -3,8 +3,16 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Domain.fs" />
     <Compile Include="Infrastructure.fs" />
-    <Compile Include="Message.fs" />
-    <Compile Include="QueryBuilders\WallQueryBuilder.fs" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="QueryBuilders\BaseQueryBuilder.fs" />
+    <Compile Include="QueryBuilders\Wall\WallGetQuery.fs" />
+    <Compile Include="QueryBuilders\Messages\MessagesGetLongPollServerQuery.fs" />
+
+    <Compile Include="VkBuilderLocator.fs" />
+  </ItemGroup>
+
 </Project>
