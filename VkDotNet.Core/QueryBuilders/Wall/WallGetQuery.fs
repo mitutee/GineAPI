@@ -7,22 +7,20 @@ open System.Collections.Generic
 open VkDotNet.Core
 open System.Runtime.CompilerServices
 [<Extension>]
-type WallGetQueryExtensions =
+module WallGetQueryExtensions =
     [<Extension>]
-    static member Build (b: QueryBuilderBase) = b.Query
-    [<Extension>]
-    static member WithAccessToken(b: WallGetQuery) token =
+    let WithAccessToken(b: WallGetQuery) token =
         WallGetQuery (AddParam b.Query "access_token" token )
     [<Extension>]
-    static member WithOwnerId(b: WallGetQuery) ownerId = 
+    let WithOwnerId(b: WallGetQuery) ownerId = 
         WallGetQuery (AddParam b.Query "owner_id" ownerId )        
     [<Extension>]
-    static member WithDomain(b: WallGetQuery) domain = 
+    let WithDomain(b: WallGetQuery) domain = 
         WallGetQuery (AddParam b.Query "domain" domain )        
     [<Extension>]
-    static member WithCount(b: WallGetQuery) (count: int) = 
+    let WithCount(b: WallGetQuery) (count: int) = 
         WallGetQuery (AddParam b.Query "count" (string count))        
     [<Extension>]
-    static member WithFields(b: WallGetQuery) ownerId = 
+    let WithFields(b: WallGetQuery) ownerId = 
         WallGetQuery (AddParam b.Query "fields" ownerId )
         
