@@ -2,4 +2,5 @@ namespace VkDotNet.Core
 open VkDotNet.Core.QueryBuilders
 
 module Vk = 
-    let Messages = MessagesGetLongPollServerQuery { BlankQuery with MethodModule = "messages"; MethodName = "getLongPollServer"}
+    let Messages = MessagesQuery { BlankQuery with MethodModule = "messages" }
+    let LongPoll = LongPollServerQuery BlankQuery
