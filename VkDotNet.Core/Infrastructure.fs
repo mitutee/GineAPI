@@ -6,10 +6,11 @@ open System.Runtime.CompilerServices
 [<AutoOpen>]
 module Infrastructure =
     let toIntFlag (b: bool) = if b then 1 else 0
-    let BlankDictionary = new Dictionary<string, string>()
+    let BlankDictionary() = new Dictionary<string, string>()
     let AddValue (dict: IDictionary<string, string>) key value =
-        dict.Add(key, value)
-        dict
+        let newDict = Dictionary<string, string> dict
+        newDict.Add(key, value)
+        newDict
 
     
     let toQueryString (dict: IDictionary<string, string>) =
@@ -20,7 +21,7 @@ module Infrastructure =
     let BaseUri = "https://api.vk.com/method/";
     let GetQueryUrl q = BaseUri + q.MethodModule + "." + q.MethodName + (toQueryString q.Params) + "&v=" + (string q.ApiVersion)
 
-    let BlankQuery = { MethodModule = ""; MethodName = ""; Params = BlankDictionary; ApiVersion = 5.68 }
+    let BlankQuery = { MethodModule = ""; MethodName = ""; Params = BlankDictionary(); ApiVersion = 5.68 }
 
     open System.Net
     open System
