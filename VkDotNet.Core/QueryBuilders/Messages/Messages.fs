@@ -1,4 +1,4 @@
-namespace VkDotNet.Core.QueryBuilders
+namespace VkDotNet.Core
 
 open System.Collections.Generic
 open VkDotNet.Core
@@ -6,11 +6,11 @@ open System.Runtime.CompilerServices
 
 type MessagesQuery(q) = inherit AbstractQueryBuilder(q)
 
-type MessagesGetLongPollServerQuery(q) = inherit MessagesQuery(q)
 
 type LongPollServerQuery(q) = inherit AbstractQueryBuilder(q)
 
 type MessagesSendQuery(q) = inherit AbstractQueryBuilder(q)
+
 
 [<Extension>]
 module Messages =
@@ -18,6 +18,11 @@ module Messages =
     [<Extension>]
     let GetLongPollServer (b: MessagesQuery) =
         MessagesGetLongPollServerQuery (SetMethodName b.Query "getLongPollServer")
+
+    
+    [<Extension>]
+    let WithAccessToken (b: MessagesGetLongPollServerQuery) token =
+        MessagesGetLongPollServerQuery (WithAccessToken b.Query token)
     [<Extension>]
     let Send (b: MessagesQuery) = 
         MessagesSendQuery (SetMethodName b.Query "send")
@@ -28,7 +33,7 @@ module LongPollServer =
     let WithKey (b: LongPollServerQuery) key =
         LongPollServerQuery ( AddParam b.Query "key" key)
     [<Extension>]
-    let WhithServer (b: LongPollServerQuery) server =
+    let WithServer (b: LongPollServerQuery) server =
         LongPollServerQuery ( AddParam b.Query "server" server)
     [<Extension>]
     let WithTs (b: LongPollServerQuery) ts =
