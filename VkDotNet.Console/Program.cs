@@ -19,8 +19,19 @@ namespace VkDotNet.Console
         {
 
             var bot = new LongPollListener(token);
+
+            bot.MessageReceived += HandleTextMessage;
+
             bot.StartListening();
 
+
+        }
+
+        private static void HandleTextMessage(IVkBot bot, Message message)
+        {
+            string answer = message.Body;
+
+            Vk.Messages.Send().WithUserId(message.AuthorId).WithMessage(answer).WithAccessToken(bot.AccessToken).Execute();
         }
     }
 }
