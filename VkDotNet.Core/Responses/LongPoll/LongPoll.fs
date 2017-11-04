@@ -3,9 +3,12 @@
 open System.Runtime.CompilerServices
 open VkDotNet.Core
 open FSharp.Data
+open FSharp.Data.JsonExtensions
 open System.Collections.Generic
 type GetLongPollServerJson = JsonProvider<""" { "response": { "key": "80d9de42848e8298c5934ecefe3d71a2018ed132", "server": "imv4.vk.com/im2852", "ts": 1757519170 } }""">
-type LongPollJson = JsonProvider<""" { "ts": 1820350874, "updates": [ [4, 1619489, 561, 123456, 1464958914, "hello", { "attach1_type": "photo", "attach1": "123456_414233177", "attach2_type": "audio", "attach2": "123456_456239018", "title": " ... " }] ] }""">
+type LongPollJson = JsonProvider<""" { "ts": 1820350874, "updates": [4,2105994,561,123456,1496404246,"hello",{"attach1_type":"photo","attach1":"123456_417336473","attach2_type":"audio","attach2":"123456_456239018","title":" ... "}] }""">
+
+type LongPollEvent = JsonProvider<""" [4,2105994,561,123456,1496404246,"hello",{"attach1_type":"photo","attach1":"123456_417336473","attach2_type":"audio","attach2":"123456_456239018","title":" ... "}]  """>
 
 
 type GetLongPollServerResponse = { Key: string; Server: string; Ts: string }
@@ -30,12 +33,39 @@ module LongPollResponse =
         sprintf "https://%s?act=a_check&key=%s&ts=%s&wait=25&mode=2&version=2" (GetValue q.Params "server") (GetValue q.Params "key") (GetValue q.Params "ts")
 
 
+
 [<Extension>]
 module LongPoll =
+                
+    let tryParse i = System.Int32.TryParse i
+    type MaybeBuilder() =
+        member this.Bind(m, f) = Option.bind f m
+        member this.Return(x) = Some x
+
+    
+    let maybe = new MaybeBuilder()
+
+    let isIncoming i = i &&& 2 = 0
+    let isNew i = i = 4
+
+
+    let mapLongPollEvent (event:JsonValue) : Option<Message> = 
+        let array = event.AsArray()
+        
+        
+        match array.[0].AsInteger() with 
+        | i when isNew i && (isIncoming (array.[2].AsInteger())) -> Some {AuthorId = array.[3].AsString(); Body = array.[5].AsString() }
+        | _ -> None
+
+                
     [<Extension>]
     let Execute (b: LongPollServerQuery) =
         let uri = LongPollResponse.GetLongPollUri b.Query
-        LongPollJson.Load(uri)
+        let answer = LongPollJson.Load(uri)
+        let json = answer.Updates.JsonValue
+        let messageUpdates = json.AsArray() |> Array.choose mapLongPollEvent
+
+        {Ts = string answer.Ts; MessageUpdates = messageUpdates}
 
 
            

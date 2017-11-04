@@ -17,24 +17,10 @@ namespace VkDotNet.Console
 
         static void StartListening()
         {
-            var lp = Vk
-                .Messages
-                .GetLongPollServer()
-                .WithAccessToken(token)
-                .Execute();
-            while (true)
-            {
-                string token = "b95e0d29d252f1833b5d1c5fa32cccf19997d3d377472434c87fe5cfee257172004e2dfd42f0705074955";
-                var r = Vk.LongPoll
-                    .WithKey(lp.Key)
-                    .WithServer(lp.Server)
-                    .WithTs(lp.Ts)
-                    .Execute();
 
+            var bot = new LongPollListener(token);
+            bot.StartListening();
 
-                WriteLine(r);
-                System.Threading.Thread.Sleep(2500);
-            }
         }
     }
 }
